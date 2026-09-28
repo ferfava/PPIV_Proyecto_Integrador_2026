@@ -16,6 +16,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 - [ ] Visualización final integrada en Streamlit.
 - [x] Modelos predictivos de clasificación implementados y evaluados.
 - [x] Comparación de algoritmos avanzados con justificación técnica y de negocio.
+- [x] Técnica no supervisada de segmentación implementada y evaluada.
 - [ ] Documento funcional de alto nivel explicando el proceso completo.
 - [x] Entrega de archivos fuente utilizados en los desarrollos (en progreso y versionados en el repositorio).
 - [ ] Preparación de exposición final.
@@ -32,7 +33,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 - [ ] Calibración de probabilidades.
 - [ ] Optimización del umbral según costo de negocio.
 - [x] Explicabilidad global e individual con SHAP.
-- [ ] Segmentación no supervisada de clientes.
+- [x] Segmentación no supervisada de clientes con análisis de estabilidad.
 - [ ] Motor de priorización de retención combinando riesgo y valor del cliente.
 - [ ] Evaluación de explicaciones contrafactuales si los datos y el modelo lo permiten.
 - [ ] Aplicación Streamlit con vistas de EDA, riesgo, explicación y priorización.
@@ -47,7 +48,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 6. `06_baseline_models.ipynb` / `scripts/run_baseline_models.py` — baseline y evaluación inicial.
 7. `07_advanced_models.ipynb` / `scripts/run_advanced_models.py` — modelos avanzados, optimización y ensemble.
 8. `08_explainability_shap.ipynb` / `scripts/run_shap_explainability.py` — interpretabilidad global e individual.
-9. `09_customer_segmentation.ipynb` — clustering/segmentación.
+9. `09_customer_segmentation.ipynb` / `scripts/run_customer_segmentation.py` — clustering, perfiles y estabilidad.
 10. `10_retention_engine.ipynb` — priorización y decisión de negocio.
 11. `app/streamlit_app.py` — integración visual y funcional.
 12. `reports/final_report/` — documento final.
