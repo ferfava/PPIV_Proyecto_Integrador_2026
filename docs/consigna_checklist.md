@@ -10,7 +10,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 - [x] Estadística descriptiva e interpretación.
 - [x] Visualización de patrones relevantes.
 - [x] Formulación de al menos 3 hipótesis.
-- [ ] Contraste estadístico de las hipótesis cuando corresponda.
+- [x] Contraste estadístico de las hipótesis cuando corresponde.
 - [x] Extracción de insights accionables preliminares.
 - [ ] Recomendaciones orientadas a potenciar retención, valor y/o ventas.
 - [ ] Visualización final integrada en Streamlit.
@@ -23,6 +23,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 ## Componentes que agregamos para elevar el proyecto
 
 - [x] Prevención explícita de data leakage mediante fecha de corte y revisión de variables.
+- [x] Feature engineering reproducible con pipeline y split estratificado previo al preprocessing.
 - [ ] Baseline interpretable con Regresión Logística.
 - [ ] Comparación de Random Forest, Gradient Boosting/XGBoost y CatBoost.
 - [ ] Validación cruzada y optimización de hiperparámetros.
@@ -41,7 +42,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 2. `02_data_cleaning.ipynb` — limpieza y preprocessing.
 3. `03_eda.ipynb` / `scripts/run_eda.py` — EDA y visualizaciones.
 4. `04_hypothesis_testing.ipynb` — hipótesis y pruebas.
-5. `05_feature_engineering.ipynb` — variables derivadas y preparación del modelado.
+5. `05_feature_engineering.ipynb` / `src/features/feature_engineering.py` — variables derivadas y preparación del modelado.
 6. `06_baseline_models.ipynb` — baseline y evaluación inicial.
 7. `07_advanced_models.ipynb` — modelos avanzados y optimización.
 8. `08_explainability_shap.ipynb` — interpretabilidad.
