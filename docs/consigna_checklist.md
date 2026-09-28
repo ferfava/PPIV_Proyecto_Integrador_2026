@@ -14,8 +14,8 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 - [x] Extracción de insights accionables preliminares.
 - [ ] Recomendaciones orientadas a potenciar retención, valor y/o ventas.
 - [ ] Visualización final integrada en Streamlit.
-- [x] Modelos predictivos de clasificación iniciados y evaluados con baselines reproducibles.
-- [ ] Comparación de algoritmos avanzados con justificación técnica y de negocio.
+- [x] Modelos predictivos de clasificación implementados y evaluados.
+- [x] Comparación de algoritmos avanzados con justificación técnica y de negocio.
 - [ ] Documento funcional de alto nivel explicando el proceso completo.
 - [x] Entrega de archivos fuente utilizados en los desarrollos (en progreso y versionados en el repositorio).
 - [ ] Preparación de exposición final.
@@ -25,9 +25,10 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 - [x] Prevención explícita de data leakage mediante fecha de corte y revisión de variables.
 - [x] Feature engineering reproducible con pipeline y split estratificado previo al preprocessing.
 - [x] Baseline interpretable con Regresión Logística.
-- [ ] Comparación de Random Forest, Gradient Boosting/XGBoost y CatBoost.
-- [ ] Validación cruzada y optimización de hiperparámetros.
+- [x] Comparación de Random Forest, Gradient Boosting, XGBoost y CatBoost.
+- [x] Validación cruzada estratificada y optimización de hiperparámetros.
 - [x] Métricas adecuadas al desbalance: ROC-AUC, PR-AUC, recall, precision, F1, balanced accuracy y matriz de confusión.
+- [x] Ensemble de probabilidades entre modelos de boosting.
 - [ ] Calibración de probabilidades.
 - [ ] Optimización del umbral según costo de negocio.
 - [ ] Explicabilidad global e individual con SHAP.
@@ -44,7 +45,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 4. `04_hypothesis_testing.ipynb` — hipótesis y pruebas.
 5. `05_feature_engineering.ipynb` / `src/features/feature_engineering.py` — variables derivadas y preparación del modelado.
 6. `06_baseline_models.ipynb` / `scripts/run_baseline_models.py` — baseline y evaluación inicial.
-7. `07_advanced_models.ipynb` — modelos avanzados y optimización.
+7. `07_advanced_models.ipynb` / `scripts/run_advanced_models.py` — modelos avanzados, optimización y ensemble.
 8. `08_explainability_shap.ipynb` — interpretabilidad.
 9. `09_customer_segmentation.ipynb` — clustering/segmentación.
 10. `10_retention_engine.ipynb` — priorización y decisión de negocio.
