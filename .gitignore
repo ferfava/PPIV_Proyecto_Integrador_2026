@@ -1,0 +1,35 @@
+# Datos crudos y procesados locales
+data/raw/*
+!data/raw/.gitkeep
+
+data/processed/*
+!data/processed/.gitkeep
+
+# Modelos entrenados
+models/*
+!models/.gitkeep
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# Variables de entorno
+.env
+.env.*
+
+# Sistemas / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Streamlit local
+.streamlit/secrets.toml
