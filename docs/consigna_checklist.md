@@ -31,7 +31,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 - [x] Ensemble de probabilidades entre modelos de boosting.
 - [ ] Calibración de probabilidades.
 - [ ] Optimización del umbral según costo de negocio.
-- [ ] Explicabilidad global e individual con SHAP.
+- [x] Explicabilidad global e individual con SHAP.
 - [ ] Segmentación no supervisada de clientes.
 - [ ] Motor de priorización de retención combinando riesgo y valor del cliente.
 - [ ] Evaluación de explicaciones contrafactuales si los datos y el modelo lo permiten.
@@ -46,7 +46,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 5. `05_feature_engineering.ipynb` / `src/features/feature_engineering.py` — variables derivadas y preparación del modelado.
 6. `06_baseline_models.ipynb` / `scripts/run_baseline_models.py` — baseline y evaluación inicial.
 7. `07_advanced_models.ipynb` / `scripts/run_advanced_models.py` — modelos avanzados, optimización y ensemble.
-8. `08_explainability_shap.ipynb` — interpretabilidad.
+8. `08_explainability_shap.ipynb` / `scripts/run_shap_explainability.py` — interpretabilidad global e individual.
 9. `09_customer_segmentation.ipynb` — clustering/segmentación.
 10. `10_retention_engine.ipynb` — priorización y decisión de negocio.
 11. `app/streamlit_app.py` — integración visual y funcional.
