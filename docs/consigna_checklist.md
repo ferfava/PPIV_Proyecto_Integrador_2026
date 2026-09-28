@@ -6,23 +6,23 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 
 - [x] Dataset con problemas reales de calidad para trabajar limpieza y preprocessing.
 - [x] Auditoría inicial de estructura, faltantes, duplicados, rangos e inconsistencias.
-- [ ] Limpieza y preprocesamiento documentado y reproducible.
-- [ ] Estadística descriptiva e interpretación.
-- [ ] Visualización de patrones relevantes.
-- [ ] Formulación de al menos 3 hipótesis.
+- [x] Limpieza y preprocesamiento documentado y reproducible.
+- [x] Estadística descriptiva e interpretación.
+- [x] Visualización de patrones relevantes.
+- [x] Formulación de al menos 3 hipótesis.
 - [ ] Contraste estadístico de las hipótesis cuando corresponda.
-- [ ] Extracción de insights accionables.
+- [x] Extracción de insights accionables preliminares.
 - [ ] Recomendaciones orientadas a potenciar retención, valor y/o ventas.
 - [ ] Visualización final integrada en Streamlit.
 - [ ] Modelos predictivos de clasificación y/o técnicas no supervisadas.
 - [ ] Comparación de algoritmos con justificación técnica y de negocio.
 - [ ] Documento funcional de alto nivel explicando el proceso completo.
-- [ ] Entrega de archivos fuente utilizados en los desarrollos.
+- [x] Entrega de archivos fuente utilizados en los desarrollos (en progreso y versionados en el repositorio).
 - [ ] Preparación de exposición final.
 
 ## Componentes que agregamos para elevar el proyecto
 
-- [ ] Prevención explícita de data leakage mediante fecha de corte y revisión de variables.
+- [x] Prevención explícita de data leakage mediante fecha de corte y revisión de variables.
 - [ ] Baseline interpretable con Regresión Logística.
 - [ ] Comparación de Random Forest, Gradient Boosting/XGBoost y CatBoost.
 - [ ] Validación cruzada y optimización de hiperparámetros.
@@ -39,7 +39,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 
 1. `01_data_audit.ipynb` — auditoría y calidad.
 2. `02_data_cleaning.ipynb` — limpieza y preprocessing.
-3. `03_eda.ipynb` — EDA y visualizaciones.
+3. `03_eda.ipynb` / `scripts/run_eda.py` — EDA y visualizaciones.
 4. `04_hypothesis_testing.ipynb` — hipótesis y pruebas.
 5. `05_feature_engineering.ipynb` — variables derivadas y preparación del modelado.
 6. `06_baseline_models.ipynb` — baseline y evaluación inicial.
