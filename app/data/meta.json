@@ -1,0 +1,11 @@
+{
+  "clientes": 15000,
+  "tasa_abandono": 0.1532,
+  "churn_positivos": 2298,
+  "roc_auc_ensemble": 0.9209106470386854,
+  "pr_auc_ensemble": 0.5472910894343745,
+  "captura_top_20": 0.6956521739130435,
+  "lift_top_20": 3.4782608695652177,
+  "modelo_explicable_roc_auc": 0.9202,
+  "modelo_explicable_pr_auc": 0.5378
+}
