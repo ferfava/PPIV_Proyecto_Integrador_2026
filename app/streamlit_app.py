@@ -52,7 +52,7 @@ sec=st.sidebar.radio("",["Resumen ejecutivo","Riesgo y priorización","Desempeñ
 st.sidebar.markdown("---")
 st.sidebar.markdown("**PPIV · Proyecto Integrador 2026**")
 st.sidebar.caption("Ciencia de Datos e Inteligencia Artificial")
-st.sidebar.caption("Métricas validadas sobre 3.000 clientes de test. El ranking visible muestra los 100 clientes de mayor prioridad.")
+st.sidebar.caption("Métricas validadas sobre 3.000 clientes de test. El ranking visible es una muestra anonimizada de los 20 clientes con mayor prioridad.")
 
 if sec=="Resumen ejecutivo":
     hero("Predicción de abandono, segmentación y priorización de acciones de retención")
@@ -75,7 +75,7 @@ if sec=="Resumen ejecutivo":
 elif sec=="Riesgo y priorización":
     hero("De la probabilidad de abandono a una lista operativa de acción")
     x,y,z=st.columns([1,1.3,1])
-    bandas=x.multiselect("Banda de prioridad",["Crítica","Alta","Media","Baja"],default=["Crítica","Alta"]); segmentos=sorted(ranking["segmento"].dropna().unique()); segs=y.multiselect("Segmento",segmentos,default=segmentos); n=z.slider("Cantidad de clientes",10,100,50,10)
+    bandas=x.multiselect("Banda de prioridad",["Crítica","Alta","Media","Baja"],default=["Crítica","Alta"]); segmentos=sorted(ranking["segmento"].dropna().unique()); segs=y.multiselect("Segmento",segmentos,default=segmentos); n=z.slider("Cantidad de clientes",10,20,20,10)
     f=ranking[ranking["banda_prioridad"].isin(bandas)&ranking["segmento"].isin(segs)].head(n).copy()
     a,b,c,e=st.columns(4); a.metric("Clientes mostrados",len(f)); b.metric("Riesgo medio",pct(f["probabilidad_abandono"].mean()) if len(f) else "—"); c.metric("Prioridad media",num(f["puntaje_prioridad"].mean(),1) if len(f) else "—"); e.metric("Valor medio",num(f["score_valor"].mean(),2) if len(f) else "—")
     t=f[["cliente_id","banda_prioridad","puntaje_prioridad","probabilidad_abandono","segmento","gasto_total","satisfaccion","tickets_soporte","accion_recomendada"]].rename(columns={"cliente_id":"Cliente","banda_prioridad":"Prioridad","puntaje_prioridad":"Puntaje","probabilidad_abandono":"Prob. abandono","segmento":"Segmento","gasto_total":"Gasto total","satisfaccion":"Satisfacción","tickets_soporte":"Tickets soporte","accion_recomendada":"Acción recomendada"})
