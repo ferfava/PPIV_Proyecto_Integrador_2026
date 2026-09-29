@@ -4,18 +4,18 @@ CL-00002,Crítica,85.13,0.7811,Insatisfechos en riesgo,1094.01,1.0,3,Recuperaci�
 CL-00003,Crítica,84.98,0.8248,Insatisfechos en riesgo,1062.39,1.0,3,Recuperación de experiencia,0.8547
 CL-00004,Crítica,84.28,0.7681,Insatisfechos en riesgo,1217.36,2.0,0,Recuperación de experiencia,0.9741
 CL-00005,Crítica,83.66,0.7969,Insatisfechos en riesgo,867.82,2.0,3,Recuperación de experiencia,0.8746
-CL-00006,Crítica,83.37,0.7563,Insatisfechos en riesgo,1204.16,2.0,2,Recuperación de experiencia,0.9685
-CL-00007,Crítica,82.14,0.7551,Insatisfechos en riesgo,1072.54,2.0,0,Recuperación de experiencia,0.9224
-CL-00008,Crítica,81.16,0.7602,Insatisfechos en riesgo,903.12,2.0,1,Recuperación de experiencia,0.87
-CL-00009,Crítica,80.83,0.7625,Insatisfechos en riesgo,743.56,1.0,1,Recuperación de experiencia,0.8507
-CL-00010,Crítica,80.57,0.7665,Insatisfechos en riesgo,974.85,2.0,1,Recuperación de experiencia,0.8299
-CL-00011,Crítica,79.42,0.7499,Insatisfechos en riesgo,853.27,2.0,2,Recuperación de experiencia,0.8271
-CL-00012,Crítica,79.35,0.7017,Insatisfechos en riesgo,985.52,1.0,3,Recuperación de experiencia,0.9494
-CL-00013,Crítica,78.9,0.7769,Insatisfechos en riesgo,746.07,2.0,1,Recuperación de experiencia,0.7361
-CL-00014,Crítica,78.83,0.8011,Insatisfechos en riesgo,696.94,1.0,3,Recuperación de experiencia,0.6704
-CL-00015,Crítica,78.69,0.7259,Insatisfechos en riesgo,818.58,2.0,0,Recuperación de experiencia,0.8605
-CL-00016,Crítica,78.4,0.7405,Insatisfechos en riesgo,927.38,2.0,1,Recuperación de experiencia,0.8106
-CL-00017,Crítica,78.24,0.7393,Insatisfechos en riesgo,927.22,2.0,2,Recuperación de experiencia,0.8076
-CL-00018,Crítica,78.14,0.713,Insatisfechos en riesgo,1054.77,2.0,1,Recuperación de experiencia,0.8718
-CL-00019,Crítica,77.79,0.6843,Insatisfechos en riesgo,920.98,2.0,1,Recuperación de experiencia,0.9324
-CL-00020,Crítica,77.21,0.7305,Insatisfechos en riesgo,839.5,1.0,1,Recuperación de experiencia,0.789
+CL-00105,Alta,71.1,0.7356,Alta fricción de soporte,741.28,2.0,6,Recuperación de experiencia,0.8276
+CL-00124,Alta,70.23,0.7135,Alta fricción de soporte,811.25,4.0,5,Escalamiento de soporte,0.8503
+CL-00128,Alta,69.92,0.738,Alta fricción de soporte,685.87,1.0,6,Recuperación de experiencia,0.7743
+CL-00134,Alta,69.71,0.7763,Alta fricción de soporte,565.04,2.0,5,Recuperación de experiencia,0.6661
+CL-00136,Alta,69.69,0.688,Alta fricción de soporte,838.08,2.0,5,Recuperación de experiencia,0.8947
+CL-00260,Alta,65.25,0.885,Inactivos satisfechos,51.23,,2,Reactivación personalizada,0.307
+CL-00411,Media,59.91,0.7899,Inactivos satisfechos,166.85,3.0,1,Reactivación personalizada,0.3409
+CL-00444,Media,58.46,0.764,Inactivos satisfechos,187.89,4.0,0,Reactivación personalizada,0.3502
+CL-00463,Media,57.66,0.8468,Activos satisfechos,135.28,3.0,1,Seguimiento preventivo,0.1045
+CL-00472,Media,57.23,0.77,Inactivos satisfechos,76.6,3.0,0,Seguimiento preventivo,0.2854
+CL-00480,Media,56.91,0.7584,Inactivos satisfechos,107.7,5.0,3,Reactivación personalizada,0.3025
+CL-00486,Media,56.68,0.8459,Activos satisfechos,35.46,3.0,2,Seguimiento preventivo,0.068
+CL-00487,Media,56.55,0.7897,Activos satisfechos,129.68,4.0,2,Seguimiento preventivo,0.2087
+CL-00528,Media,55.12,0.7816,Activos satisfechos,146.33,3.0,1,Seguimiento preventivo,0.1727
+CL-00534,Media,54.97,0.8166,Activos satisfechos,14.91,4.0,2,Seguimiento preventivo,0.0759
