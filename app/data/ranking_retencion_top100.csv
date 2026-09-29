@@ -1,0 +1,21 @@
+cliente_id,banda_prioridad,puntaje_prioridad,probabilidad_abandono,segmento,gasto_total,satisfaccion,tickets_soporte,accion_recomendada,score_valor
+CL-00001,Crítica,88.6,0.8634,Insatisfechos en riesgo,899.33,2.0,3,Recuperación de experiencia,0.8992
+CL-00002,Crítica,85.13,0.7811,Insatisfechos en riesgo,1094.01,1.0,3,Recuperación de experiencia,0.9741
+CL-00003,Crítica,84.98,0.8248,Insatisfechos en riesgo,1062.39,1.0,3,Recuperación de experiencia,0.8547
+CL-00004,Crítica,84.28,0.7681,Insatisfechos en riesgo,1217.36,2.0,0,Recuperación de experiencia,0.9741
+CL-00005,Crítica,83.66,0.7969,Insatisfechos en riesgo,867.82,2.0,3,Recuperación de experiencia,0.8746
+CL-00006,Crítica,83.37,0.7563,Insatisfechos en riesgo,1204.16,2.0,2,Recuperación de experiencia,0.9685
+CL-00007,Crítica,82.14,0.7551,Insatisfechos en riesgo,1072.54,2.0,0,Recuperación de experiencia,0.9224
+CL-00008,Crítica,81.16,0.7602,Insatisfechos en riesgo,903.12,2.0,1,Recuperación de experiencia,0.87
+CL-00009,Crítica,80.83,0.7625,Insatisfechos en riesgo,743.56,1.0,1,Recuperación de experiencia,0.8507
+CL-00010,Crítica,80.57,0.7665,Insatisfechos en riesgo,974.85,2.0,1,Recuperación de experiencia,0.8299
+CL-00011,Crítica,79.42,0.7499,Insatisfechos en riesgo,853.27,2.0,2,Recuperación de experiencia,0.8271
+CL-00012,Crítica,79.35,0.7017,Insatisfechos en riesgo,985.52,1.0,3,Recuperación de experiencia,0.9494
+CL-00013,Crítica,78.9,0.7769,Insatisfechos en riesgo,746.07,2.0,1,Recuperación de experiencia,0.7361
+CL-00014,Crítica,78.83,0.8011,Insatisfechos en riesgo,696.94,1.0,3,Recuperación de experiencia,0.6704
+CL-00015,Crítica,78.69,0.7259,Insatisfechos en riesgo,818.58,2.0,0,Recuperación de experiencia,0.8605
+CL-00016,Crítica,78.4,0.7405,Insatisfechos en riesgo,927.38,2.0,1,Recuperación de experiencia,0.8106
+CL-00017,Crítica,78.24,0.7393,Insatisfechos en riesgo,927.22,2.0,2,Recuperación de experiencia,0.8076
+CL-00018,Crítica,78.14,0.713,Insatisfechos en riesgo,1054.77,2.0,1,Recuperación de experiencia,0.8718
+CL-00019,Crítica,77.79,0.6843,Insatisfechos en riesgo,920.98,2.0,1,Recuperación de experiencia,0.9324
+CL-00020,Crítica,77.21,0.7305,Insatisfechos en riesgo,839.5,1.0,1,Recuperación de experiencia,0.789
