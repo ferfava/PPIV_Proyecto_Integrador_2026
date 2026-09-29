@@ -1,0 +1,10 @@
+indicador,valor
+Filas originales,15000
+Columnas originales,30
+Valores faltantes en coupon_code,6133
+Valores faltantes en age,1200
+Valores faltantes en total_spent,1050
+Edades < 18 detectadas,516
+Inconsistencias temporales,3762
+Duplicados completos,0
+IDs duplicados,0
