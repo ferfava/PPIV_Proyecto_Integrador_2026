@@ -13,7 +13,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 - [x] Contraste estadístico de las hipótesis cuando corresponde.
 - [x] Extracción de insights accionables preliminares.
 - [x] Recomendaciones orientadas a potenciar retención, valor y/o ventas mediante motor de priorización.
-- [ ] Visualización final integrada en Streamlit.
+- [ ] Visualización final integrada y validada en Streamlit Cloud.
 - [x] Modelos predictivos de clasificación implementados y evaluados.
 - [x] Comparación de algoritmos avanzados con justificación técnica y de negocio.
 - [x] Técnica no supervisada de segmentación implementada y evaluada.
@@ -36,7 +36,8 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 - [x] Segmentación no supervisada de clientes con análisis de estabilidad.
 - [x] Motor de priorización de retención combinando riesgo, valor y segmento, validado con lift/capture rate.
 - [ ] Evaluación de explicaciones contrafactuales si los datos y el modelo lo permiten.
-- [ ] Aplicación Streamlit con vistas de EDA, riesgo, explicación y priorización.
+- [x] Aplicación Streamlit desarrollada en español con vistas de EDA, riesgo, modelos, SHAP, segmentación y priorización.
+- [ ] Despliegue y validación visual final en Streamlit Community Cloud.
 
 ## Orden de desarrollo
 
