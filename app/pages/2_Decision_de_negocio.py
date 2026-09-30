@@ -76,21 +76,26 @@ else:
 st.markdown('<div class="note"><b>Principio de gobierno del modelo.</b> La probabilidad no decide por sí sola. El modelo estima riesgo; la política de negocio define cuántos clientes intervenir según presupuesto, costo de contacto y capacidad operativa.</div>', unsafe_allow_html=True)
 
 st.markdown("## 4. Trazabilidad")
+table = cap.copy()
+table["capacidad"] *= 100
+table["captura_abandono"] *= 100
+table["tasa_abandono_grupo"] *= 100
+table = table.rename(columns={
+    "capacidad":"Capacidad (%)",
+    "threshold_aprox":"Umbral aprox.",
+    "clientes_seleccionados":"Clientes",
+    "captura_abandono":"Captura abandono (%)",
+    "tasa_abandono_grupo":"Tasa abandono grupo (%)",
+    "tp":"TP","fp":"FP","fn":"FN"
+})
 st.dataframe(
-    cap.rename(columns={
-        "capacidad":"Capacidad",
-        "threshold_aprox":"Umbral aprox.",
-        "clientes_seleccionados":"Clientes",
-        "captura_abandono":"Captura abandono",
-        "tasa_abandono_grupo":"Tasa abandono grupo",
-        "tp":"TP","fp":"FP","fn":"FN"
-    }),
+    table,
     use_container_width=True,
     hide_index=True,
     column_config={
-        "Capacidad": st.column_config.NumberColumn(format="%.0f%%"),
-        "Captura abandono": st.column_config.NumberColumn(format="%.1f%%"),
-        "Tasa abandono grupo": st.column_config.NumberColumn(format="%.1f%%"),
+        "Capacidad (%)": st.column_config.NumberColumn(format="%.0f"),
+        "Captura abandono (%)": st.column_config.NumberColumn(format="%.1f"),
+        "Tasa abandono grupo (%)": st.column_config.NumberColumn(format="%.1f"),
         "Umbral aprox.": st.column_config.NumberColumn(format="%.3f"),
     }
 )
