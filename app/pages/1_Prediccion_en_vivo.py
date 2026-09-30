@@ -12,9 +12,47 @@ MODEL_DIR = BASE / "model"
 
 st.markdown("""
 <style>
-.stApp{background:#f5f7fb}.block-container{padding-top:1.4rem;max-width:1450px}
-.hero{background:linear-gradient(135deg,#0f172a 0%,#1d4ed8 100%);padding:1.6rem 1.8rem;border-radius:18px;color:white;margin-bottom:1rem}
-div[data-testid="stMetric"]{background:white;border:1px solid #e5e9f2;padding:1rem;border-radius:14px}
+:root{
+    --navy:#101828;
+    --navy-2:#1d2939;
+    --blue:#2457d6;
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --border:#e5e9f2;
+    --text:#172033;
+    --muted:#667085;
+}
+.stApp{background:var(--bg);color:var(--text)}
+.block-container{padding-top:1.4rem;max-width:1450px}
+[data-testid="stSidebar"]{
+    background:var(--navy)!important;
+    border-right:1px solid #263449;
+}
+[data-testid="stSidebar"] *{color:#f8fafc!important}
+[data-testid="stSidebarNav"] a{
+    border-radius:10px!important;
+    margin:.12rem .35rem!important;
+    transition:background .15s ease!important;
+}
+[data-testid="stSidebarNav"] a:hover{background:var(--navy-2)!important}
+[data-testid="stSidebarNav"] a[aria-current="page"]{
+    background:var(--blue)!important;
+    color:white!important;
+}
+[data-testid="stSidebarNav"] a[aria-current="page"] *{color:white!important}
+.hero{
+    background:linear-gradient(135deg,#0f172a 0%,#1d4ed8 100%);
+    padding:1.6rem 1.8rem;border-radius:18px;color:white;margin-bottom:1rem;
+    box-shadow:0 10px 30px rgba(31,41,55,.10)
+}
+.hero h1{margin:0 0 .35rem;color:white}
+.hero p{margin:0;opacity:.88;color:white}
+div[data-testid="stMetric"]{
+    background:var(--card);border:1px solid var(--border);padding:1rem;border-radius:14px;
+    box-shadow:0 3px 12px rgba(31,41,55,.04)
+}
+[data-testid="stTabs"] button{font-weight:600}
+[data-testid="stDataFrame"]{border-radius:12px;overflow:hidden}
 </style>
 """, unsafe_allow_html=True)
 
@@ -181,39 +219,31 @@ with tab1:
     spent = c2.number_input("Gasto total", min_value=0.0, value=500.0, step=25.0)
     tickets = c3.number_input("Tickets de soporte", min_value=0, value=2, step=1)
     freq = c4.number_input("Compras en últimos 3 meses", min_value=0, value=7, step=1)
-    c1, c2, c3 = st.columns(3)
+    c1,c2,c3 = st.columns(3)
     aov = c1.number_input("Ticket promedio", min_value=0.0, value=60.0, step=5.0)
     visits = c2.number_input("Visitas totales", min_value=0, value=15, step=1)
     session = c3.number_input("Tiempo promedio de sesión", min_value=0.0, value=8.0, step=.5)
-    c1, c2, c3 = st.columns(3)
+    c1,c2,c3 = st.columns(3)
     pages = c1.number_input("Páginas por sesión", min_value=0.0, value=4.0, step=.25)
-    open_rate = c2.slider("Apertura de emails (%)", 0, 100, 50)
-    click_rate = c3.slider("Clics en emails (%)", 0, 100, 25)
+    open_rate = c2.slider("Apertura de emails (%)",0,100,50)
+    click_rate = c3.slider("Clics en emails (%)",0,100,25)
 
     row = pd.DataFrame([{
-        "satisfaction_score": satisf,
-        "total_spent": spent,
-        "support_tickets": tickets,
-        "last_3_month_purchase_freq": freq,
-        "avg_order_value": aov,
-        "total_visits": visits,
-        "email_open_rate": open_rate / 100,
-        "email_click_rate": click_rate / 100,
-        "avg_session_time": session,
-        "pages_per_session": pages,
+        "satisfaction_score":satisf,"total_spent":spent,"support_tickets":tickets,
+        "last_3_month_purchase_freq":freq,"avg_order_value":aov,"total_visits":visits,
+        "email_open_rate":open_rate/100,"email_click_rate":click_rate/100,
+        "avg_session_time":session,"pages_per_session":pages,
     }])
-
     pred, x, _ = predict(row)
-    p = float(pred.loc[0, "probabilidad_abandono"])
-    band = pred.loc[0, "nivel_riesgo"]
-    rec = pred.loc[0, "accion_recomendada"]
+    p = float(pred.loc[0,"probabilidad_abandono"])
+    band = pred.loc[0,"nivel_riesgo"]
+    rec = pred.loc[0,"accion_recomendada"]
 
     st.markdown("### Resultado")
-    a, b, c = st.columns(3)
+    a,b,c = st.columns(3)
     a.metric("Probabilidad de abandono", f"{p*100:.1f}%")
     b.metric("Nivel de riesgo", band)
     c.metric("Umbral operativo", "50%")
-
     if p >= .60:
         st.error(f"Acción sugerida: {rec}")
     elif p >= .35:
@@ -233,11 +263,12 @@ with tab1:
     fig.add_vline(x=0, line_dash="dash", line_color="#98a2b3")
     fig.update_layout(
         height=390,
-        margin=dict(l=10, r=10, t=50, b=20),
+        margin=dict(l=10,r=10,t=50,b=20),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#344054"),
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig,use_container_width=True)
     st.caption(
         "Explicación local por perturbación: para cada variable se reemplaza su valor por la mediana de entrenamiento y se mide cuánto cambia la probabilidad. "
         "La sección IA explicable del dashboard conserva el análisis SHAP formal."
@@ -245,17 +276,9 @@ with tab1:
 
 with tab2:
     st.subheader("Scoring masivo")
-    st.write(
-        "Subí un CSV con las variables del modelo. Si falta alguna columna, la app completa ese campo con la mediana del conjunto de entrenamiento y lo informa."
-    )
-    template = pd.DataFrame([{c: MEDIANS[c] for c in FEATURES}])
-    st.download_button(
-        "Descargar plantilla CSV",
-        template.to_csv(index=False).encode("utf-8-sig"),
-        "plantilla_prediccion_churn.csv",
-        "text/csv",
-    )
-
+    st.write("Subí un CSV con las variables del modelo. Si falta alguna columna, la app completa ese campo con la mediana del conjunto de entrenamiento y lo informa.")
+    template = pd.DataFrame([{c:MEDIANS[c] for c in FEATURES}])
+    st.download_button("Descargar plantilla CSV", template.to_csv(index=False).encode("utf-8-sig"), "plantilla_prediccion_churn.csv", "text/csv")
     file = st.file_uploader("Archivo CSV de clientes", type=["csv"])
     if file is not None:
         try:
@@ -265,42 +288,31 @@ with tab2:
             else:
                 scored, _, missing = predict(raw)
                 if missing:
-                    st.warning(
-                        "Columnas ausentes completadas con medianas de entrenamiento: "
-                        + ", ".join(LABELS[c] for c in missing)
-                    )
-                st.success(f"Se procesaron {len(scored):,} clientes.".replace(",", "."))
-                a, b, c = st.columns(3)
+                    st.warning("Columnas ausentes completadas con medianas de entrenamiento: " + ", ".join(LABELS[c] for c in missing))
+                st.success(f"Se procesaron {len(scored):,} clientes.".replace(",","."))
+                a,b,c = st.columns(3)
                 a.metric("Riesgo medio", f"{scored['probabilidad_abandono'].mean()*100:.1f}%")
-                b.metric("Riesgo alto/crítico", int(scored["nivel_riesgo"].isin(["Alto", "Crítico"]).sum()))
-                c.metric("Riesgo crítico", int((scored["nivel_riesgo"] == "Crítico").sum()))
-
-                show = scored.sort_values("probabilidad_abandono", ascending=False).copy()
+                b.metric("Riesgo alto/crítico", int(scored["nivel_riesgo"].isin(["Alto","Crítico"]).sum()))
+                c.metric("Riesgo crítico", int((scored["nivel_riesgo"]=="Crítico").sum()))
+                show = scored.sort_values("probabilidad_abandono",ascending=False).copy()
                 st.dataframe(
-                    show.head(200),
-                    use_container_width=True,
-                    hide_index=True,
+                    show.head(200),use_container_width=True,hide_index=True,
                     column_config={
-                        "probabilidad_abandono": st.column_config.ProgressColumn(
-                            "Probabilidad de abandono", min_value=0, max_value=1, format="%.1f%%"
+                        "probabilidad_abandono":st.column_config.ProgressColumn(
+                            "Probabilidad de abandono",min_value=0,max_value=1,format="%.1f%%"
                         )
-                    },
+                    }
                 )
-                st.download_button(
-                    "Descargar resultados",
-                    show.to_csv(index=False).encode("utf-8-sig"),
-                    "clientes_scoring_churn.csv",
-                    "text/csv",
-                )
+                st.download_button("Descargar resultados", show.to_csv(index=False).encode("utf-8-sig"), "clientes_scoring_churn.csv", "text/csv")
         except Exception as exc:
             st.error(f"No se pudo procesar el archivo: {exc}")
 
 with st.expander("Variables requeridas por el modelo"):
     st.dataframe(
         pd.DataFrame({
-            "Columna técnica": FEATURES,
-            "Descripción": [LABELS[f] for f in FEATURES],
-            "Valor por defecto": [MEDIANS[f] for f in FEATURES],
+            "Columna técnica":FEATURES,
+            "Descripción":[LABELS[f] for f in FEATURES],
+            "Valor por defecto":[MEDIANS[f] for f in FEATURES],
         }),
         hide_index=True,
         use_container_width=True,
