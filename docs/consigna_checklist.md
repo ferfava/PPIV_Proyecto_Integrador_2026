@@ -32,6 +32,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 - [x] Ensemble de probabilidades entre modelos de boosting.
 - [x] Calibración de probabilidades con comparación Platt vs isotónica.
 - [x] Optimización de la política de decisión según costo y capacidad operativa.
+- [x] Simulador interactivo de capacidad operativa integrado en Streamlit.
 - [x] Explicabilidad global e individual con SHAP.
 - [x] Segmentación no supervisada de clientes con análisis de estabilidad.
 - [x] Motor de priorización de retención combinando riesgo, valor y segmento, validado con lift/capture rate.
@@ -53,7 +54,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 9. `09_customer_segmentation.ipynb` / `scripts/run_customer_segmentation.py` — clustering, perfiles y estabilidad.
 10. `10_retention_engine.ipynb` / `scripts/run_retention_engine.py` — priorización y decisión de negocio.
 11. `11_calibration_threshold.ipynb` / `scripts/run_calibration_threshold.py` — calibración de probabilidades y política de decisión.
-12. `app/streamlit_app.py` + `app/pages/1_Prediccion_en_vivo.py` — integración visual, inferencia y scoring masivo.
+12. `app/streamlit_app.py` + `app/pages/1_Prediccion_en_vivo.py` + `app/pages/2_Decision_de_negocio.py` — integración visual, inferencia, scoring y decisión operativa.
 13. `reports/final_report/` — documento final.
 
 ## Regla de calidad del proyecto
