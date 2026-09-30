@@ -31,20 +31,19 @@
     "avg_order_value": {"default": 59.7715952771741, "min": 4.999108251755561, "max": 117.75269465716934},
     "total_visits": {"default": 15.0, "min": 7.0, "max": 25.0},
     "email_open_rate": {"default": 0.5, "min": 0.01, "max": 0.99},
-    "email_click_rate": {"default": 0.25, "min": 0.009900000000000091, "max": 0.49},
+    "email_click_rate": {"default": 0.25, "min": 0.0099, "max": 0.49},
     "avg_session_time": {"default": 8.014962804546911, "min": 1.1730747876904146, "max": 15.0944118043669},
     "pages_per_session": {"default": 4.0127342878156345, "min": 0.648842012508093, "max": 7.398790528309449}
   },
   "metrics": {
-    "roc_auc": 0.9155306401917153,
-    "pr_auc": 0.5261765913069786,
-    "recall": 0.9956521739130435,
-    "precision": 0.5140291806958474,
-    "f1": 0.6780162842339008
+    "roc_auc": 0.9146623587812394,
+    "pr_auc": 0.5219891477659949,
+    "recall": 1.0,
+    "f1": 0.6744868035190615
   },
   "threshold": 0.5,
   "training_rows": 12000,
   "test_rows": 3000,
   "model": "XGBoost operativo de inferencia",
-  "note": "Modelo reducido para inferencia interactiva; el ensemble se conserva como benchmark de máximo desempeño."
+  "note": "Modelo compacto para inferencia interactiva; el ensemble se conserva como benchmark de máximo desempeño."
 }
