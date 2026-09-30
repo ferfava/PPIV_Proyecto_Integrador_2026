@@ -32,17 +32,63 @@ platt = cal.loc[cal["metodo"] == "Platt"].iloc[0]
 raw = cal.loc[cal["metodo"] == "Sin calibrar"].iloc[0]
 
 c1,c2,c3,c4 = st.columns(4)
-c1.metric("ROC-AUC", f"{platt['roc_auc']:.3f}")
-c2.metric("PR-AUC", f"{platt['pr_auc']:.3f}")
-c3.metric("Brier Score", f"{platt['brier']:.3f}", delta=f"{(platt['brier']-raw['brier']):.3f}")
-c4.metric("ECE", f"{platt['ece_10_bins']:.3f}", delta=f"{(platt['ece_10_bins']-raw['ece_10_bins']):.3f}")
+c1.metric("ROC-AUC", f"{platt['roc_auc']:.3f}", help="Capacidad del modelo para ordenar correctamente clientes con y sin abandono.")
+c2.metric("PR-AUC", f"{platt['pr_auc']:.3f}", help="Área bajo la curva Precision-Recall; especialmente útil con clases desbalanceadas.")
+c3.metric(
+    "Brier Score",
+    f"{platt['brier']:.3f}",
+    delta=f"{(platt['brier']-raw['brier']):.3f}",
+    delta_color="inverse",
+    help="Error cuadrático medio de las probabilidades. Menor es mejor.",
+)
+c4.metric(
+    "ECE",
+    f"{platt['ece_10_bins']:.3f}",
+    delta=f"{(platt['ece_10_bins']-raw['ece_10_bins']):.3f}",
+    delta_color="inverse",
+    help="Expected Calibration Error: diferencia promedio entre probabilidad estimada y frecuencia observada. Menor es mejor.",
+)
 
-comp = cal.rename(columns={"metodo":"Método","brier":"Brier Score","ece_10_bins":"ECE","roc_auc":"ROC-AUC","pr_auc":"PR-AUC"})
-fig = px.bar(comp, x="Método", y=["Brier Score","ECE"], barmode="group", title="Calibración antes y después")
-fig.update_layout(height=380, margin=dict(l=10,r=10,t=50,b=20), paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
+comp = cal.rename(columns={
+    "metodo":"Método",
+    "brier":"Brier Score",
+    "ece_10_bins":"ECE",
+    "roc_auc":"ROC-AUC",
+    "pr_auc":"PR-AUC",
+})
+comp_long = comp.melt(
+    id_vars="Método",
+    value_vars=["Brier Score", "ECE"],
+    var_name="Métrica de calibración",
+    value_name="Error",
+)
+fig = px.bar(
+    comp_long,
+    x="Método",
+    y="Error",
+    color="Métrica de calibración",
+    barmode="group",
+    title="Calibración antes y después",
+)
+fig.update_layout(
+    height=380,
+    margin=dict(l=10,r=10,t=50,b=20),
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
+    legend_title_text="Métrica",
+)
 st.plotly_chart(fig, use_container_width=True)
 
 st.markdown('<div class="note"><b>Interpretación.</b> Platt scaling mejora fuertemente la calibración sin modificar la capacidad de ranking del modelo. Esto permite usar la probabilidad como una magnitud más interpretable, no solo como un score de ordenamiento.</div>', unsafe_allow_html=True)
+
+with st.expander("¿Qué significan Brier Score y ECE?"):
+    st.markdown(
+        "- **Brier Score:** mide el error cuadrático entre la probabilidad predicha y el resultado real. "
+        "Un valor menor indica probabilidades más precisas.\n"
+        "- **ECE (Expected Calibration Error):** compara, por intervalos de probabilidad, el riesgo estimado con la frecuencia observada. "
+        "Un ECE cercano a 0 indica buena calibración.\n"
+        "- **Calibrar no mejora necesariamente el ranking:** busca que un riesgo estimado del 30% sea interpretable aproximadamente como 30 de cada 100 casos similares."
+    )
 
 st.markdown("## 2. Política por capacidad de intervención")
 options = {f"Top {int(r.capacidad*100)}%": r.capacidad for _, r in cap.iterrows()}
@@ -56,10 +102,21 @@ c3.metric("Tasa de abandono del grupo", f"{selected['tasa_abandono_grupo']*100:.
 c4.metric("Umbral aproximado", f"{selected['threshold_aprox']:.3f}")
 
 chart_df = cap.copy()
-chart_df["Capacidad"] = (chart_df["capacidad"]*100).astype(int).astype(str) + "%"
-fig = px.line(chart_df, x="Capacidad", y="captura_abandono", markers=True, title="Cobertura de abandonos según capacidad operativa")
+chart_df["Capacidad (%)"] = (chart_df["capacidad"] * 100).astype(int)
+fig = px.line(
+    chart_df,
+    x="Capacidad (%)",
+    y="captura_abandono",
+    markers=True,
+    title="Cobertura de abandonos según capacidad operativa",
+)
 fig.update_yaxes(tickformat=".0%", title="Abandonos capturados")
-fig.update_xaxes(title="Porción de clientes intervenida")
+fig.update_xaxes(
+    title="Porción de clientes intervenida",
+    tickmode="array",
+    tickvals=chart_df["Capacidad (%)"].tolist(),
+    ticktext=[f"{v}%" for v in chart_df["Capacidad (%)"].tolist()],
+)
 fig.update_layout(height=390, margin=dict(l=10,r=10,t=50,b=20), paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
 st.plotly_chart(fig, use_container_width=True)
 
