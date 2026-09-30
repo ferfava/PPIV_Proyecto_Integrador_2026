@@ -12,7 +12,7 @@ Proyecto integrador orientado a construir una solución completa de Ciencia de D
 
 **Streamlit:** https://ppivproyectointegrador2026-3nmnzhsbpyrbvub9rtrwoc.streamlit.app/
 
-La aplicación incluye dashboard ejecutivo, comparación de modelos, explicabilidad, segmentación, hipótesis, calidad de datos y una sección de **predicción en vivo** para clientes nuevos.
+La aplicación incluye dashboard ejecutivo, comparación de modelos, explicabilidad, segmentación, hipótesis, calidad de datos, predicción en vivo y una vista de **decisión de negocio** basada en probabilidades calibradas y capacidad operativa.
 
 ## Objetivo
 
@@ -69,6 +69,7 @@ El flujo implementado sigue estas etapas:
 14. Calibración de probabilidades y política de decisión.
 15. Aplicación Streamlit.
 16. Predicción interactiva y scoring masivo por CSV.
+17. Simulación de capacidad operativa para decisión de negocio.
 
 ## Hipótesis analizadas
 
@@ -238,6 +239,9 @@ La app está organizada en las siguientes vistas:
 - Hipótesis e insights
 - Calidad de datos y EDA
 - Predicción en vivo
+- Decisión de negocio
+
+La vista **Decisión de negocio** permite elegir la capacidad de intervención y observar cuántos clientes deben contactarse, qué porcentaje de abandonos se captura y cuál es el umbral aproximado asociado a cada nivel de capacidad.
 
 ## Estructura del repositorio
 
@@ -246,7 +250,7 @@ PPIV_Proyecto_Integrador_2026/
 ├── app/
 │   ├── data/                     # Snapshots y datos de la aplicación
 │   ├── model/                    # Modelo operativo de inferencia
-│   ├── pages/                    # Página de predicción en vivo
+│   ├── pages/                    # Predicción en vivo y decisión de negocio
 │   └── streamlit_app.py          # Dashboard principal
 ├── data/
 │   ├── raw/                      # Datos originales (no versionados)
@@ -332,7 +336,8 @@ Completado:
 - política de decisión por costo/capacidad;
 - dashboard;
 - predicción en vivo;
-- scoring masivo.
+- scoring masivo;
+- simulador de capacidad operativa.
 
 En preparación:
 
