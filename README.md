@@ -66,8 +66,9 @@ El flujo implementado sigue estas etapas:
 11. Explicabilidad con SHAP.
 12. Segmentación no supervisada.
 13. Motor de priorización de retención.
-14. Aplicación Streamlit.
-15. Predicción interactiva y scoring masivo por CSV.
+14. Calibración de probabilidades y política de decisión.
+15. Aplicación Streamlit.
+16. Predicción interactiva y scoring masivo por CSV.
 
 ## Hipótesis analizadas
 
@@ -182,6 +183,31 @@ Ejemplos de acciones:
 - seguimiento preventivo;
 - fidelización.
 
+## Calibración de probabilidades y decisión de negocio
+
+Se agregó una capa específica para distinguir **predicción** de **decisión**.
+
+Se compararon probabilidades sin calibrar, Platt scaling e isotonic regression utilizando un split estratificado de **64% entrenamiento, 16% calibración y 20% test final**.
+
+Resultados principales del modelo operativo:
+
+- Brier Score sin calibrar: **0,1039**
+- Brier Score con Platt: **0,0755**
+- ECE sin calibrar: **0,1062**
+- ECE con Platt: **0,0098**
+- ROC-AUC: **0,9184** antes y después de Platt
+
+Se seleccionó **Platt scaling** porque mejora fuertemente la calidad probabilística sin alterar el ranking de riesgo.
+
+Además se evaluaron políticas por capacidad operativa:
+
+- Top 10%: captura **35,7%** de los abandonos.
+- Top 20%: captura **67,4%**.
+- Top 25%: captura **84,8%**.
+- Top 30%: captura **100%** en este conjunto de test.
+
+La conclusión es que el umbral de 0,50 no debe tomarse como regla universal. La empresa puede definir la intervención según costo, presupuesto y capacidad, usando el ranking calibrado como base.
+
 ## Predicción en vivo
 
 La aplicación incluye una sección de inferencia interactiva donde se pueden modificar variables de un cliente y obtener:
@@ -250,6 +276,7 @@ PPIV_Proyecto_Integrador_2026/
 8. `08_explainability_shap.ipynb` — Explicabilidad global e individual.
 9. `09_customer_segmentation.ipynb` — Segmentación no supervisada.
 10. `10_retention_engine.ipynb` — Priorización de clientes y acciones.
+11. `11_calibration_threshold.ipynb` — Calibración de probabilidades y política de decisión.
 
 ## Prevención de fuga de información
 
@@ -257,6 +284,7 @@ El proyecto aplica medidas explícitas para reducir riesgo de `data leakage`:
 
 - split estratificado antes del preprocessing;
 - imputación ajustada solo sobre train;
+- conjunto de calibración separado del test final;
 - exclusión de identificadores;
 - revisión de variables con información potencialmente posterior al evento objetivo;
 - separación entre variables explicativas y variables de control/calidad.
@@ -300,6 +328,8 @@ Completado:
 - explicabilidad;
 - segmentación;
 - motor de retención;
+- calibración de probabilidades;
+- política de decisión por costo/capacidad;
 - dashboard;
 - predicción en vivo;
 - scoring masivo.
@@ -308,4 +338,4 @@ En preparación:
 
 - informe final;
 - presentación oral;
-- ajustes finales de calibración y umbral de negocio.
+- evaluación de contrafactuales y monitoreo de drift como extensiones opcionales.
