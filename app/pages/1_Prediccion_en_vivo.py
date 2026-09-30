@@ -1,60 +1,24 @@
 from pathlib import Path
 import json
 import math
+import sys
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-st.set_page_config(page_title="Predicción en vivo · Retención", page_icon="🎯", layout="wide")
 BASE = Path(__file__).resolve().parents[1]
+if str(BASE) not in sys.path:
+    sys.path.append(str(BASE))
+
+from ui import apply_theme, primary_navigation, project_footer_sidebar
+
+st.set_page_config(page_title="Predicción en vivo · Retención", page_icon="🎯", layout="wide")
 MODEL_DIR = BASE / "model"
 
-st.markdown("""
-<style>
-:root{
-    --navy:#101828;
-    --navy-2:#1d2939;
-    --blue:#2457d6;
-    --bg:#f5f7fb;
-    --card:#ffffff;
-    --border:#e5e9f2;
-    --text:#172033;
-    --muted:#667085;
-}
-.stApp{background:var(--bg);color:var(--text)}
-.block-container{padding-top:1.4rem;max-width:1450px}
-[data-testid="stSidebar"]{
-    background:var(--navy)!important;
-    border-right:1px solid #263449;
-}
-[data-testid="stSidebar"] *{color:#f8fafc!important}
-[data-testid="stSidebarNav"] a{
-    border-radius:10px!important;
-    margin:.12rem .35rem!important;
-    transition:background .15s ease!important;
-}
-[data-testid="stSidebarNav"] a:hover{background:var(--navy-2)!important}
-[data-testid="stSidebarNav"] a[aria-current="page"]{
-    background:var(--blue)!important;
-    color:white!important;
-}
-[data-testid="stSidebarNav"] a[aria-current="page"] *{color:white!important}
-.hero{
-    background:linear-gradient(135deg,#0f172a 0%,#1d4ed8 100%);
-    padding:1.6rem 1.8rem;border-radius:18px;color:white;margin-bottom:1rem;
-    box-shadow:0 10px 30px rgba(31,41,55,.10)
-}
-.hero h1{margin:0 0 .35rem;color:white}
-.hero p{margin:0;opacity:.88;color:white}
-div[data-testid="stMetric"]{
-    background:var(--card);border:1px solid var(--border);padding:1rem;border-radius:14px;
-    box-shadow:0 3px 12px rgba(31,41,55,.04)
-}
-[data-testid="stTabs"] button{font-weight:600}
-[data-testid="stDataFrame"]{border-radius:12px;overflow:hidden}
-</style>
-""", unsafe_allow_html=True)
+apply_theme()
+primary_navigation("live")
+project_footer_sidebar()
 
 
 @st.cache_resource
@@ -106,7 +70,6 @@ def _tree_leaf(tree, values):
     split_indices = tree["split_indices"]
     split_conditions = tree["split_conditions"]
     default_left = tree.get("default_left", [1] * len(left))
-
     while left[node] != -1:
         fidx = int(split_indices[node])
         threshold = float(split_conditions[node])
@@ -170,11 +133,11 @@ def action(row, p):
 
 def predict(df):
     x, missing = prepare(df)
-    prob = predict_probability_matrix(x)
+    score = predict_probability_matrix(x)
     out = df.copy()
-    out["probabilidad_abandono"] = prob
-    out["nivel_riesgo"] = [risk_band(p) for p in prob]
-    out["accion_recomendada"] = [action(x.iloc[i], p) for i, p in enumerate(prob)]
+    out["probabilidad_abandono"] = score
+    out["nivel_riesgo"] = [risk_band(p) for p in score]
+    out["accion_recomendada"] = [action(x.iloc[i], p) for i, p in enumerate(score)]
     return out, x, missing
 
 
@@ -185,30 +148,22 @@ def local_perturbation_explanation(x_one, p_full):
         alt.loc[alt.index[0], feature] = MEDIANS[feature]
         p_alt = float(predict_probability_matrix(alt)[0])
         impact = p_full - p_alt
-        rows.append({
-            "Variable": LABELS[feature],
-            "Impacto local": impact,
-            "Efecto": "Aumenta el riesgo" if impact >= 0 else "Reduce el riesgo",
-        })
+        rows.append({"Variable": LABELS[feature], "Impacto local": impact, "Efecto": "Aumenta el riesgo" if impact >= 0 else "Reduce el riesgo"})
     exp = pd.DataFrame(rows)
     exp = exp.reindex(exp["Impacto local"].abs().sort_values(ascending=False).index).head(6)
     return exp.sort_values("Impacto local")
 
 
-st.markdown(
-    '<div class="hero"><h1>Predicción de abandono en vivo</h1>'
-    '<p>Aplicación del modelo XGBoost sobre clientes nuevos, con explicación individual y scoring masivo por CSV.</p></div>',
-    unsafe_allow_html=True,
-)
+st.markdown('<div class="hero"><h1>Predicción de abandono en vivo</h1><p>Aplicación del modelo XGBoost sobre clientes nuevos, con explicación individual y scoring masivo por CSV.</p></div>', unsafe_allow_html=True)
 
 m1, m2, m3, m4 = st.columns(4)
 m1.metric("ROC-AUC validado", f"{meta['metrics']['roc_auc']:.3f}")
 m2.metric("PR-AUC validado", f"{meta['metrics']['pr_auc']:.3f}")
 m3.metric("Sensibilidad (recall)", f"{meta['metrics']['recall']*100:.1f}%")
 m4.metric("Clientes de test", f"{meta['test_rows']:,}".replace(",", "."))
-st.caption(
-    "Este es el modelo operativo compacto para inferencia. El ensemble completo se mantiene como benchmark de máximo desempeño en el dashboard principal."
-)
+st.caption("Este es el modelo operativo compacto para inferencia. El ensemble completo se mantiene como benchmark de máximo desempeño en la vista analítica.")
+
+st.info("Gobierno del modelo: esta pantalla muestra el score del modelo operativo para explorar clientes nuevos. La calibración probabilística y la política formal de intervención se validan por separado en ‘Decisión de negocio’; por eso no se usa un corte universal de 50%.")
 
 tab1, tab2 = st.tabs(["Predicción individual", "Predicción masiva por CSV"])
 
@@ -219,31 +174,27 @@ with tab1:
     spent = c2.number_input("Gasto total", min_value=0.0, value=500.0, step=25.0)
     tickets = c3.number_input("Tickets de soporte", min_value=0, value=2, step=1)
     freq = c4.number_input("Compras en últimos 3 meses", min_value=0, value=7, step=1)
-    c1,c2,c3 = st.columns(3)
+    c1, c2, c3 = st.columns(3)
     aov = c1.number_input("Ticket promedio", min_value=0.0, value=60.0, step=5.0)
     visits = c2.number_input("Visitas totales", min_value=0, value=15, step=1)
     session = c3.number_input("Tiempo promedio de sesión", min_value=0.0, value=8.0, step=.5)
-    c1,c2,c3 = st.columns(3)
+    c1, c2, c3 = st.columns(3)
     pages = c1.number_input("Páginas por sesión", min_value=0.0, value=4.0, step=.25)
-    open_rate = c2.slider("Apertura de emails (%)",0,100,50)
-    click_rate = c3.slider("Clics en emails (%)",0,100,25)
+    open_rate = c2.slider("Apertura de emails (%)", 0, 100, 50)
+    click_rate = c3.slider("Clics en emails (%)", 0, 100, 25)
 
-    row = pd.DataFrame([{
-        "satisfaction_score":satisf,"total_spent":spent,"support_tickets":tickets,
-        "last_3_month_purchase_freq":freq,"avg_order_value":aov,"total_visits":visits,
-        "email_open_rate":open_rate/100,"email_click_rate":click_rate/100,
-        "avg_session_time":session,"pages_per_session":pages,
-    }])
+    row = pd.DataFrame([{"satisfaction_score": satisf, "total_spent": spent, "support_tickets": tickets, "last_3_month_purchase_freq": freq, "avg_order_value": aov, "total_visits": visits, "email_open_rate": open_rate / 100, "email_click_rate": click_rate / 100, "avg_session_time": session, "pages_per_session": pages}])
     pred, x, _ = predict(row)
-    p = float(pred.loc[0,"probabilidad_abandono"])
-    band = pred.loc[0,"nivel_riesgo"]
-    rec = pred.loc[0,"accion_recomendada"]
+    p = float(pred.loc[0, "probabilidad_abandono"])
+    band = pred.loc[0, "nivel_riesgo"]
+    rec = pred.loc[0, "accion_recomendada"]
 
     st.markdown("### Resultado")
-    a,b,c = st.columns(3)
-    a.metric("Probabilidad de abandono", f"{p*100:.1f}%")
-    b.metric("Nivel de riesgo", band)
-    c.metric("Umbral operativo", "50%")
+    a, b, c = st.columns(3)
+    a.metric("Score de riesgo del modelo", f"{p*100:.1f}%")
+    b.metric("Banda orientativa", band)
+    c.metric("Política operativa", "Ranking + capacidad")
+
     if p >= .60:
         st.error(f"Acción sugerida: {rec}")
     elif p >= .35:
@@ -251,33 +202,19 @@ with tab1:
     else:
         st.success(f"Acción sugerida: {rec}")
 
+    st.caption("Las bandas son una ayuda de lectura para la simulación individual. La decisión operativa final se define mediante ranking, calibración y capacidad disponible.")
+
     exp = local_perturbation_explanation(x, p)
-    fig = px.bar(
-        exp,
-        x="Impacto local",
-        y="Variable",
-        color="Efecto",
-        orientation="h",
-        title="Qué variables mueven esta predicción respecto de un cliente típico",
-    )
+    fig = px.bar(exp, x="Impacto local", y="Variable", color="Efecto", orientation="h", title="Qué variables mueven este score respecto de un cliente típico")
     fig.add_vline(x=0, line_dash="dash", line_color="#98a2b3")
-    fig.update_layout(
-        height=390,
-        margin=dict(l=10,r=10,t=50,b=20),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#344054"),
-    )
-    st.plotly_chart(fig,use_container_width=True)
-    st.caption(
-        "Explicación local por perturbación: para cada variable se reemplaza su valor por la mediana de entrenamiento y se mide cuánto cambia la probabilidad. "
-        "La sección IA explicable del dashboard conserva el análisis SHAP formal."
-    )
+    fig.update_layout(height=390, margin=dict(l=10, r=10, t=50, b=20), paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font=dict(color="#344054"))
+    st.plotly_chart(fig, use_container_width=True)
+    st.caption("Explicación local por perturbación: para cada variable se reemplaza su valor por la mediana de entrenamiento y se mide cuánto cambia el score. La sección IA explicable de la vista analítica conserva el análisis SHAP formal.")
 
 with tab2:
     st.subheader("Scoring masivo")
     st.write("Subí un CSV con las variables del modelo. Si falta alguna columna, la app completa ese campo con la mediana del conjunto de entrenamiento y lo informa.")
-    template = pd.DataFrame([{c:MEDIANS[c] for c in FEATURES}])
+    template = pd.DataFrame([{c: MEDIANS[c] for c in FEATURES}])
     st.download_button("Descargar plantilla CSV", template.to_csv(index=False).encode("utf-8-sig"), "plantilla_prediccion_churn.csv", "text/csv")
     file = st.file_uploader("Archivo CSV de clientes", type=["csv"])
     if file is not None:
@@ -289,34 +226,19 @@ with tab2:
                 scored, _, missing = predict(raw)
                 if missing:
                     st.warning("Columnas ausentes completadas con medianas de entrenamiento: " + ", ".join(LABELS[c] for c in missing))
-                st.success(f"Se procesaron {len(scored):,} clientes.".replace(",","."))
-                a,b,c = st.columns(3)
-                a.metric("Riesgo medio", f"{scored['probabilidad_abandono'].mean()*100:.1f}%")
-                b.metric("Riesgo alto/crítico", int(scored["nivel_riesgo"].isin(["Alto","Crítico"]).sum()))
-                c.metric("Riesgo crítico", int((scored["nivel_riesgo"]=="Crítico").sum()))
-                show = scored.sort_values("probabilidad_abandono",ascending=False).copy()
-                st.dataframe(
-                    show.head(200),use_container_width=True,hide_index=True,
-                    column_config={
-                        "probabilidad_abandono":st.column_config.ProgressColumn(
-                            "Probabilidad de abandono",min_value=0,max_value=1,format="%.1f%%"
-                        )
-                    }
-                )
+                st.success(f"Se procesaron {len(scored):,} clientes.".replace(",", "."))
+                a, b, c = st.columns(3)
+                a.metric("Score medio", f"{scored['probabilidad_abandono'].mean()*100:.1f}%")
+                b.metric("Bandas alta/crítica", int(scored["nivel_riesgo"].isin(["Alto", "Crítico"]).sum()))
+                c.metric("Banda crítica", int((scored["nivel_riesgo"] == "Crítico").sum()))
+                show = scored.sort_values("probabilidad_abandono", ascending=False).copy()
+                st.dataframe(show.head(200), use_container_width=True, hide_index=True, column_config={"probabilidad_abandono": st.column_config.ProgressColumn("Score de riesgo", min_value=0, max_value=1, format="%.1f%%")})
                 st.download_button("Descargar resultados", show.to_csv(index=False).encode("utf-8-sig"), "clientes_scoring_churn.csv", "text/csv")
         except Exception as exc:
             st.error(f"No se pudo procesar el archivo: {exc}")
 
 with st.expander("Variables requeridas por el modelo"):
-    st.dataframe(
-        pd.DataFrame({
-            "Columna técnica":FEATURES,
-            "Descripción":[LABELS[f] for f in FEATURES],
-            "Valor por defecto":[MEDIANS[f] for f in FEATURES],
-        }),
-        hide_index=True,
-        use_container_width=True,
-    )
+    st.dataframe(pd.DataFrame({"Columna técnica": FEATURES, "Descripción": [LABELS[f] for f in FEATURES], "Valor por defecto": [MEDIANS[f] for f in FEATURES]}), hide_index=True, use_container_width=True)
 
 st.markdown("---")
-st.caption("Proyecto Integrador · Modelo operativo XGBoost · Predicción sobre datos nuevos")
+st.caption("Proyecto Integrador · Modelo operativo XGBoost · Inferencia sobre datos nuevos")
