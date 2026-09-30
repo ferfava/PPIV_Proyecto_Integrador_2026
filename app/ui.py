@@ -67,9 +67,9 @@ def primary_navigation(active: str):
     st.sidebar.markdown("## Retention Intelligence")
     st.sidebar.caption("PPIV · Ciencia de Datos e IA")
     st.sidebar.markdown("### Navegación principal")
-    st.sidebar.page_link("streamlit_app.py", label="Analítica y monitoreo", icon="📊")
-    st.sidebar.page_link("pages/1_Prediccion_en_vivo.py", label="Predicción en vivo", icon="🎯")
-    st.sidebar.page_link("pages/2_Decision_de_negocio.py", label="Decisión de negocio", icon="📈")
+    st.sidebar.page_link("streamlit_app.py", label="Analítica y monitoreo")
+    st.sidebar.page_link("pages/1_Prediccion_en_vivo.py", label="Predicción en vivo")
+    st.sidebar.page_link("pages/2_Decision_de_negocio.py", label="Decisión de negocio")
     st.sidebar.markdown("---")
 
 
