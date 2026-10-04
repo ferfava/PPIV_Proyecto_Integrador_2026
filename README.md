@@ -339,8 +339,13 @@ Completado:
 - scoring masivo;
 - simulador de capacidad operativa.
 
-En preparación:
+Entregables finales:
 
-- informe final;
-- presentación oral;
-- evaluación de contrafactuales y monitoreo de drift como extensiones opcionales.
+- informe final funcional en `reports/final_report/informe_final.md`;
+- figuras finales en `reports/figures/`;
+- guion de exposición en `docs/guion_exposicion_final.md`.
+
+Extensiones opcionales futuras:
+
+- evaluación de contrafactuales;
+- monitoreo de drift.
