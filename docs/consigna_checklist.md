@@ -17,9 +17,9 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 - [x] Modelos predictivos de clasificación implementados y evaluados.
 - [x] Comparación de algoritmos avanzados con justificación técnica y de negocio.
 - [x] Técnica no supervisada de segmentación implementada y evaluada.
-- [ ] Documento funcional de alto nivel explicando el proceso completo.
+- [x] Documento funcional de alto nivel explicando el proceso completo.
 - [x] Entrega de archivos fuente utilizados en los desarrollos versionados en el repositorio.
-- [ ] Preparación de exposición final.
+- [x] Preparación de exposición final.
 
 ## Componentes que agregamos para elevar el proyecto
 
@@ -36,7 +36,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 - [x] Explicabilidad global e individual con SHAP.
 - [x] Segmentación no supervisada de clientes con análisis de estabilidad.
 - [x] Motor de priorización de retención combinando riesgo, valor y segmento, validado con lift/capture rate.
-- [ ] Evaluación de explicaciones contrafactuales si los datos y el modelo lo permiten.
+- [ ] Evaluación de explicaciones contrafactuales si los datos y el modelo lo permiten (extensión opcional).
 - [x] Aplicación Streamlit desarrollada en español con vistas de EDA, riesgo, modelos, SHAP, segmentación y priorización.
 - [x] Predicción individual en vivo y scoring masivo por CSV.
 - [x] Despliegue y validación visual final en Streamlit Community Cloud.
@@ -55,7 +55,8 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 10. `10_retention_engine.ipynb` / `scripts/run_retention_engine.py` — priorización y decisión de negocio.
 11. `11_calibration_threshold.ipynb` / `scripts/run_calibration_threshold.py` — calibración de probabilidades y política de decisión.
 12. `app/streamlit_app.py` + `app/pages/1_Prediccion_en_vivo.py` + `app/pages/2_Decision_de_negocio.py` — integración visual, inferencia, scoring y decisión operativa.
-13. `reports/final_report/` — documento final.
+13. `reports/final_report/informe_final.md` — documento final.
+14. `docs/guion_exposicion_final.md` — preparación de exposición.
 
 ## Regla de calidad del proyecto
 
