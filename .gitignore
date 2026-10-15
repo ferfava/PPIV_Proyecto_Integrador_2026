@@ -28,8 +28,12 @@ __pycache__/
 # Sistemas / IDE
 .DS_Store
 Thumbs.db
+desktop.ini
 .vscode/
 .idea/
 
 # Streamlit local
 .streamlit/secrets.toml
+
+# Documentos personales / notas de oratoria
+docs/guion_exposicion_final.md

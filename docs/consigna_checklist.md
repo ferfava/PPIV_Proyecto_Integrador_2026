@@ -36,7 +36,7 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 - [x] Explicabilidad global e individual con SHAP.
 - [x] Segmentación no supervisada de clientes con análisis de estabilidad.
 - [x] Motor de priorización de retención combinando riesgo, valor y segmento, validado con lift/capture rate.
-- [ ] Evaluación de explicaciones contrafactuales si los datos y el modelo lo permiten (extensión opcional).
+- [x] Modelado de Uplift y evaluación contrafactual (extensión causal para optimizar el ROI de retención).
 - [x] Aplicación Streamlit desarrollada en español con vistas de EDA, riesgo, modelos, SHAP, segmentación y priorización.
 - [x] Predicción individual en vivo y scoring masivo por CSV.
 - [x] Despliegue y validación visual final en Streamlit Community Cloud.
@@ -54,9 +54,10 @@ Este documento traduce la consigna del trabajo práctico a entregables verificab
 9. `09_customer_segmentation.ipynb` / `scripts/run_customer_segmentation.py` — clustering, perfiles y estabilidad.
 10. `10_retention_engine.ipynb` / `scripts/run_retention_engine.py` — priorización y decisión de negocio.
 11. `11_calibration_threshold.ipynb` / `scripts/run_calibration_threshold.py` — calibración de probabilidades y política de decisión.
-12. `app/streamlit_app.py` + `app/pages/1_Prediccion_en_vivo.py` + `app/pages/2_Decision_de_negocio.py` — integración visual, inferencia, scoring y decisión operativa.
-13. `reports/final_report/informe_final.md` — documento final.
-14. `docs/guion_exposicion_final.md` — preparación de exposición.
+12. `12_uplift_modeling.ipynb` / `scripts/run_uplift_modeling.py` — modelado de uplift, matriz de 4 cuadrantes y curva Qini.
+13. `app/streamlit_app.py` + `app/pages/1_Prediccion_en_vivo.py` + `app/pages/2_Decision_de_negocio.py` — integración visual, inferencia, scoring y decisión operativa.
+14. `reports/final_report/informe_final.md` — documento final.
+15. Preparación de exposición final (estrategia narrativa y preguntas de defensa).
 
 ## Regla de calidad del proyecto
 

@@ -158,6 +158,7 @@ elif sec == "Riesgo y priorización":
     st.download_button("Descargar ranking visible", t.to_csv(index=False).encode("utf-8-sig"), "ranking_retencion.csv", "text/csv")
     with st.expander("¿Cómo se calcula el puntaje?"):
         st.write("65% riesgo de abandono + 25% valor comercial + 10% riesgo del segmento. Es un índice operativo de 0 a 100, no una probabilidad.")
+        st.caption("Nota: Este ranking prioriza por correlación de riesgo y valor. Para evaluar el impacto incremental causal (quién responde efectivamente a la intervención y excluir Perros dormidos), consultar la optimización en ‘Decisión de negocio’.")
 
 elif sec == "Desempeño de modelos":
     hero("Comparación de modelos con métricas adecuadas para una clase desbalanceada")

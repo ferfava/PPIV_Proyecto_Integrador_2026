@@ -190,7 +190,21 @@ Sobre el conjunto de test:
 - Top 25% captura aproximadamente **84,8%**.
 - Top 30% alcanza **100%** en ese conjunto.
 
-**Principio de negocio:** el modelo estima riesgo; la política de negocio decide cuántos clientes intervenir.
+### Extensión prescriptiva: Modelado de Uplift causal
+
+Como valor agregado clave para transformar la predicción en una decisión comercial óptima, se incorporó una capa de **Uplift Modeling** basada en un enfoque **T-Learner** (Two-Model Approach con Gradient Boosting) sobre un experimento A/B simulado fundamentado en las señales del negocio (satisfacción y soporte técnico).
+
+Mientras que el modelo de churn responde a *¿quién tiene riesgo de abandonar?*, el modelo de Uplift responde a: **¿qué clientes cambiarán positivamente su conducta ante una intervención comercial y a quiénes NO contactar?**
+
+El modelo clasifica la cartera en cuatro cuadrantes:
+1. **Persuadibles (23,8%):** Clientes con fricción reversible que se quedan si se interviene (foco prioritario de inversión).
+2. **Seguros (*Sure Things*, 70,3%):** Clientes estables que no abandonarán; fidelización pasiva sin descuentos innecesarios.
+3. **Causas Perdidas (*Lost Causes*, 3,4%):** Clientes con baja decidida; ahorro total de presupuesto.
+4. **Perros Dormidos (*Sleeping Dogs*, 2,6%):** Clientes pasivos donde el contacto acelera la cancelación (lista estricta *Do Not Disturb*).
+
+**Impacto comparativo en test:** Con la misma capacidad operativa (Top 20%, 600 contactos), la política de Uplift logra rescatar a **209 clientes frente a 132 del enfoque de churn tradicional**, lo que representa un **+58,2% de incremento en la efectividad neta** sin aumentar el costo comercial.
+
+**Principio de negocio:** el modelo predictivo estima riesgo; la calibración aporta probabilidades fiables; y el modelo causal de Uplift optimiza la asignación prescriptiva de recursos.
 
 ## 11. Visualización e integración con Python
 
@@ -212,7 +226,7 @@ Incluye:
 - predicción individual en vivo;
 - scoring masivo por CSV;
 - calibración;
-- simulación de capacidad operativa.
+- simulación de capacidad operativa y optimización con Uplift Modeling.
 
 Esta integración responde directamente a la consigna de conectar el desarrollo en Python con una herramienta de visualización.
 
@@ -229,19 +243,19 @@ Los principales aprendizajes son:
 5. La calibración mejora la lectura de las probabilidades.
 6. La decisión final debe considerar capacidad, costo y estrategia.
 7. El mayor valor aparece al integrar predicción, explicación y priorización.
+8. La extensión con Uplift Modeling evita el desperdicio comercial en causas perdidas y protege el margen excluyendo a perros dormidos.
 
-El **20% de clientes con mayor prioridad concentra alrededor del 69,6% de los abandonos reales** en la evaluación del ranking, lo que evidencia una oportunidad concreta para focalizar recursos.
+El **20% de clientes con mayor prioridad concentra alrededor del 69,6% de los abandonos reales** en la evaluación del ranking, y la priorización causal por Uplift eleva en **+58,2%** los rescates netos frente a la selección tradicional.
 
 ## 13. Limitaciones y próximos pasos
 
 - El dataset no representa necesariamente una empresa real específica.
-- Las asociaciones observadas no implican causalidad.
-- No se incorporaron costos reales de campañas o incentivos.
-- La política óptima debería recalibrarse con datos productivos.
-- El monitoreo de drift todavía no está implementado.
-- Las explicaciones contrafactuales quedan como extensión futura.
+- En el análisis predictivo primario, las relaciones observadas representan correlaciones estadísticas. Para abordar la dimensión causal, se implementó una prueba de concepto de Uplift Modeling basada en un A/B test simulado con las señales empíricas de satisfacción y soporte.
+- No se incorporaron costos reales monetizados de campañas o incentivos en vivo.
+- La política óptima y los modelos causales deben ser recalibrados continuamente con datos productivos de experimentos de campo en marcha.
+- El monitoreo automatizado de drift todavía no está implementado.
 
-Como próximos pasos se podrían incorporar costos y beneficio esperado, monitoreo de drift, reentrenamiento periódico, contrafactuales y experimentos A/B.
+Como próximos pasos se podrían incorporar costos unitarios precisos y ROI financiero por campaña, monitoreo de drift de datos y concepto, y validación periódica con A/B testing en producción.
 
 ## 14. Reproducibilidad y archivos fuente
 

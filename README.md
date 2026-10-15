@@ -70,6 +70,7 @@ El flujo implementado sigue estas etapas:
 15. Aplicación Streamlit.
 16. Predicción interactiva y scoring masivo por CSV.
 17. Simulación de capacidad operativa para decisión de negocio.
+18. Modelado de Uplift causal y optimización prescriptiva de retención.
 
 ## Hipótesis analizadas
 
@@ -209,6 +210,19 @@ Además se evaluaron políticas por capacidad operativa:
 
 La conclusión es que el umbral de 0,50 no debe tomarse como regla universal. La empresa puede definir la intervención según costo, presupuesto y capacidad, usando el ranking calibrado como base.
 
+## Modelado de Uplift y decisión causal (Prescriptiva)
+
+Como extensión de alto valor, el proyecto incorpora **Uplift Modeling** para responder no solo a *quién tiene riesgo de abandono*, sino a **a quién podemos salvar y a quién NO contactar**.
+
+Mediante una arquitectura **T-Learner (Gradient Boosting)** sobre un experimento A/B simulado a partir de las señales empíricas de satisfacción y soporte, se clasificó la cartera en cuatro cuadrantes:
+
+- 🎯 **Persuadibles (23,8%):** Abandonan si no intervenimos, pero se quedan si los contactamos. Foco comercial exclusivo.
+- 🛡️ **Seguros / Sure Things (70,3%):** Clientes fieles que permanecen sin necesidad de contacto; fidelización pasiva sin descuentos innecesarios.
+- ❌ **Causas Perdidas (3,4%):** Clientes con decisión de baja consumada; ahorro directo de presupuesto comercial.
+- 🚫 **Perros Dormidos / Sleeping Dogs (2,6%):** Clientes inactivos donde el contacto acelera su partida; exclusión estricta (*Do Not Disturb*).
+
+**Impacto comparativo:** Con exactamente el mismo presupuesto y capacidad operativa (Top 20%, 600 contactos), la política de Uplift salva a **209 clientes frente a 132 del enfoque tradicional**, logrando un **+58,2% de incremento en la efectividad neta** del negocio.
+
 ## Predicción en vivo
 
 La aplicación incluye una sección de inferencia interactiva donde se pueden modificar variables de un cliente y obtener:
@@ -241,7 +255,7 @@ La app está organizada en las siguientes vistas:
 - Predicción en vivo
 - Decisión de negocio
 
-La vista **Decisión de negocio** permite elegir la capacidad de intervención y observar cuántos clientes deben contactarse, qué porcentaje de abandonos se captura y cuál es el umbral aproximado asociado a cada nivel de capacidad.
+La vista **Decisión de negocio** permite calibrar probabilidades, elegir la capacidad de intervención y comparar interactivamente la política tradicional frente a la política prescriptiva de **Uplift Modeling** (deciles, clientes salvados netos y segmentación en 4 cuadrantes).
 
 ## Estructura del repositorio
 
@@ -281,6 +295,7 @@ PPIV_Proyecto_Integrador_2026/
 9. `09_customer_segmentation.ipynb` — Segmentación no supervisada.
 10. `10_retention_engine.ipynb` — Priorización de clientes y acciones.
 11. `11_calibration_threshold.ipynb` — Calibración de probabilidades y política de decisión.
+12. `12_uplift_modeling.ipynb` — Modelado de Uplift causal, matriz de 4 cuadrantes y comparativa vs churn tradicional.
 
 ## Prevención de fuga de información
 
@@ -337,15 +352,16 @@ Completado:
 - dashboard;
 - predicción en vivo;
 - scoring masivo;
-- simulador de capacidad operativa.
+- simulador de capacidad operativa;
+- modelado de Uplift causal y optimización de retención neta.
 
 Entregables finales:
 
 - informe final funcional en `reports/final_report/informe_final.md`;
 - figuras finales en `reports/figures/`;
-- guion de exposición en `docs/guion_exposicion_final.md`.
+- metodología de Uplift en `docs/uplift_modeling.md`.
 
 Extensiones opcionales futuras:
 
-- evaluación de contrafactuales;
-- monitoreo de drift.
+- validación de Uplift en producción con experimentos A/B en vivo y costos unitarios reales;
+- monitoreo automatizado de data drift y concept drift.

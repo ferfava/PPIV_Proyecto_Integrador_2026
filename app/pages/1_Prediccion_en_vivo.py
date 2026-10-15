@@ -163,7 +163,7 @@ m3.metric("Sensibilidad (recall)", f"{meta['metrics']['recall']*100:.1f}%")
 m4.metric("Clientes de test", f"{meta['test_rows']:,}".replace(",", "."))
 st.caption("Este es el modelo operativo compacto para inferencia. El ensemble completo se mantiene como benchmark de máximo desempeño en la vista analítica.")
 
-st.info("Gobierno del modelo: esta pantalla muestra el score del modelo operativo para explorar clientes nuevos. La calibración probabilística y la política formal de intervención se validan por separado en ‘Decisión de negocio’; por eso no se usa un corte universal de 50%.")
+st.info("Gobierno del modelo: esta pantalla muestra el score del modelo operativo para explorar clientes nuevos. La calibración probabilística, la restricción de capacidad y la optimización de impacto causal (Uplift) se evalúan formalmente en ‘Decisión de negocio’; por eso no se usa un corte universal de 50%.")
 
 tab1, tab2 = st.tabs(["Predicción individual", "Predicción masiva por CSV"])
 
