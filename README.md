@@ -70,7 +70,7 @@ El flujo implementado sigue estas etapas:
 15. Aplicación Streamlit.
 16. Predicción interactiva y scoring masivo por CSV.
 17. Simulación de capacidad operativa para decisión de negocio.
-18. Modelado de Uplift causal y optimización prescriptiva de retención.
+18. Prueba de concepto de Uplift con tratamiento y resultados sintéticos (sin validación causal de campo).
 
 ## Hipótesis analizadas
 
@@ -210,18 +210,18 @@ Además se evaluaron políticas por capacidad operativa:
 
 La conclusión es que el umbral de 0,50 no debe tomarse como regla universal. La empresa puede definir la intervención según costo, presupuesto y capacidad, usando el ranking calibrado como base.
 
-## Modelado de Uplift y decisión causal (Prescriptiva)
+## Modelado de Uplift (prueba de concepto con experimento simulado)
 
-Como extensión de alto valor, el proyecto incorpora **Uplift Modeling** para responder no solo a *quién tiene riesgo de abandono*, sino a **a quién podemos salvar y a quién NO contactar**.
+Como extensión, el proyecto incorpora una prueba de concepto de **Uplift Modeling** para ilustrar cómo priorizar clientes según su respuesta incremental potencial a una intervención, además del riesgo de abandono.
 
-Mediante una arquitectura **T-Learner (Gradient Boosting)** sobre un experimento A/B simulado a partir de las señales empíricas de satisfacción y soporte, se clasificó la cartera en cuatro cuadrantes:
+Se utiliza una arquitectura **T-Learner (Gradient Boosting)** sobre un experimento A/B sintético construido con reglas basadas en satisfacción y soporte. La asignación y los resultados de tratamiento son simulados; por lo tanto, las métricas siguientes describen ese escenario artificial, **no prueban un efecto causal real ni estiman resultados comerciales**.
 
-- 🎯 **Persuadibles (23,8%):** Abandonan si no intervenimos, pero se quedan si los contactamos. Foco comercial exclusivo.
-- 🛡️ **Seguros / Sure Things (70,3%):** Clientes fieles que permanecen sin necesidad de contacto; fidelización pasiva sin descuentos innecesarios.
-- ❌ **Causas Perdidas (3,4%):** Clientes con decisión de baja consumada; ahorro directo de presupuesto comercial.
-- 🚫 **Perros Dormidos / Sleeping Dogs (2,6%):** Clientes inactivos donde el contacto acelera su partida; exclusión estricta (*Do Not Disturb*).
+- 🎯 **Persuadibles (23,8% en la simulación):** El modelo los clasifica como potencialmente sensibles a la intervención según los resultados sintéticos.
+- 🛡️ **Seguros / Sure Things (70,3% en la simulación):** Perfiles cuyo resultado sintético predice baja respuesta a la intervención.
+- ❌ **Causas Perdidas (3,4% en la simulación):** Perfiles cuyo resultado sintético predice abandono aun con intervención.
+- 🚫 **Perros Dormidos / Sleeping Dogs (2,6% en la simulación):** Perfiles cuyo resultado sintético predice un posible efecto adverso.
 
-**Impacto comparativo:** Con exactamente el mismo presupuesto y capacidad operativa (Top 20%, 600 contactos), la política de Uplift salva a **209 clientes frente a 132 del enfoque tradicional**, logrando un **+58,2% de incremento en la efectividad neta** del negocio.
+**Resultado de la simulación:** Con una capacidad equivalente al Top 20% (600 contactos en el conjunto de test), la comparación arroja **209 frente a 132 retenciones simuladas** para las políticas uplift y churn, respectivamente (+58,2% en ese escenario). Estas cifras no deben interpretarse como clientes que se salvarían en producción. Para estimar impacto real se necesita una prueba A/B de campo con asignación aleatoria y resultados observados.
 
 ## Predicción en vivo
 
@@ -255,7 +255,7 @@ La app está organizada en las siguientes vistas:
 - Predicción en vivo
 - Decisión de negocio
 
-La vista **Decisión de negocio** permite calibrar probabilidades, elegir la capacidad de intervención y comparar interactivamente la política tradicional frente a la política prescriptiva de **Uplift Modeling** (deciles, clientes salvados netos y segmentación en 4 cuadrantes).
+La vista **Decisión de negocio** permite calibrar probabilidades, elegir la capacidad de intervención y comparar la política tradicional con el escenario uplift sintético (deciles, retenciones simuladas y segmentación en 4 cuadrantes).
 
 ## Estructura del repositorio
 
@@ -295,7 +295,7 @@ PPIV_Proyecto_Integrador_2026/
 9. `09_customer_segmentation.ipynb` — Segmentación no supervisada.
 10. `10_retention_engine.ipynb` — Priorización de clientes y acciones.
 11. `11_calibration_threshold.ipynb` — Calibración de probabilidades y política de decisión.
-12. `12_uplift_modeling.ipynb` — Modelado de Uplift causal, matriz de 4 cuadrantes y comparativa vs churn tradicional.
+12. `12_uplift_modeling.ipynb` — prueba sintética de Uplift, matriz de 4 cuadrantes y curva acumulada; `scripts/run_uplift_modeling.py` calcula deciles y compara políticas por capacidad.
 
 ## Prevención de fuga de información
 
@@ -353,7 +353,7 @@ Completado:
 - predicción en vivo;
 - scoring masivo;
 - simulador de capacidad operativa;
-- modelado de Uplift causal y optimización de retención neta.
+- prueba de concepto de Uplift sobre un experimento sintético.
 
 Entregables finales:
 

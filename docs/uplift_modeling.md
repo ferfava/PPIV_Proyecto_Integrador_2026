@@ -1,10 +1,14 @@
-# Modelado de Uplift — Impacto Incremental y Decisión Causal
+# Prueba de concepto de Uplift — Impacto Incremental y Decisión
 
 ## Objetivo
 
-Superar las limitaciones de la predicción tradicional de `churn` transformando la priorización reactiva en una **estrategia causal y prescriptiva**. El modelado de Uplift responde no a *"¿quién tiene riesgo de abandonar?"*, sino a:
+Explorar cómo complementar la predicción tradicional de `churn` con una priorización prescriptiva. En un experimento válido, el modelado de Uplift busca responder no solo *"¿quién tiene riesgo de abandonar?"*, sino también:
 
 > **¿Qué clientes cambiarán favorablemente su comportamiento al recibir una intervención comercial, y a quiénes NO contactar?**
+
+## Alcance y limitación de la evaluación
+
+Esta implementación es una **prueba de concepto sobre un experimento sintético**, no un experimento de campo. La asignación a control/tratamiento y los resultados se generan artificialmente; las reglas de simulación introducen deliberadamente efectos positivos y adversos según señales de satisfacción y soporte. Por ello, los deciles, cuadrantes y diferencias entre políticas muestran cómo funciona el flujo bajo esas reglas, pero **no demuestran que una campaña real retendría clientes ni estiman su ROI**. Antes de tomar decisiones operativas se necesita una prueba A/B real, con tratamiento definido, resultados observados y evaluación de incertidumbre.
 
 ---
 
@@ -19,9 +23,9 @@ Superar las limitaciones de la predicción tradicional de `churn` transformando 
 
 ---
 
-## 2. Los 4 Cuadrantes Estratégicos de la Cartera
+## 2. Los 4 cuadrantes de respuesta (marco conceptual)
 
-El modelo clasifica a los clientes en cuatro arquetipos conductuales ante la intervención:
+Los cuadrantes describen arquetipos teóricos de respuesta a una intervención. Sus porcentajes en este proyecto provienen de resultados sintéticos y no identifican tipos conductuales verificados en clientes reales:
 
 ```text
                           COMPORTAMIENTO SIN CONTACTO
@@ -47,7 +51,7 @@ CON CONTACTO        Abandona | PERROS DORMIDOS (2,6%)| CAUSAS PERDIDAS (3,4%)|
 
 ## 3. Metodología: Two-Model Approach (T-Learner)
 
-Para estimar el impacto contrafactual sin requerir dependencias no estándar:
+Con datos experimentales válidos, un T-Learner estima resultados potenciales por separado para tratamiento y control. En esta prueba se aplica el mismo procedimiento a resultados sintéticos:
 
 1. Se entrena un modelo $M_0$ (Gradient Boosting) exclusivamente sobre el grupo **Control** ($T=0$).
 2. Se entrena un modelo $M_1$ (Gradient Boosting) exclusivamente sobre el grupo **Tratamiento** ($T=1$).
@@ -56,22 +60,22 @@ Para estimar el impacto contrafactual sin requerir dependencias no estándar:
 
 ---
 
-## 4. Resultados en Test y Comparativa Comercial
+## 4. Resultados en el test sintético y comparación de políticas
 
-Evaluado sobre 3.000 clientes reservados de test:
+Evaluado sobre 3.000 clientes reservados de test con tratamiento y resultados generados por simulación:
 
 ### Deciles de Uplift
 
-- **Decil 1 (Top 10 %):** Churn en Control = 53,7 %, Churn en Tratados = 15,7 % $\rightarrow$ **Uplift real = +38,1 %**.
-- **Decil 2:** Churn en Control = 53,6 %, Churn en Tratados = 22,1 % $\rightarrow$ **Uplift real = +31,5 %**.
-- **Decil 10:** Churn en Control = 13,6 %, Churn en Tratados = 18,9 % $\rightarrow$ **Uplift real = -5,3 %** (*Perros dormidos confirmados*).
+- **Decil 1 (Top 10 %):** Churn observado en la simulación: Control = 53,7 %, Tratados = 15,7 % $\rightarrow$ **diferencia simulada = +38,1 %**.
+- **Decil 2:** Churn observado en la simulación: Control = 53,6 %, Tratados = 22,1 % $\rightarrow$ **diferencia simulada = +31,5 %**.
+- **Decil 10:** Churn observado en la simulación: Control = 13,6 %, Tratados = 18,9 % $\rightarrow$ **diferencia simulada = -5,3 %** (perfil adverso generado bajo las reglas de simulación).
 
 ### Eficiencia Operativa: Churn Tradicional vs. Uplift
 
-| Capacidad Operativa | Clientes Contactados | Salvados Modelo Churn | Salvados Modelo Uplift | Ganancia Neta | Mejora de Eficiencia |
+| Capacidad Operativa | Clientes Contactados | Retenciones simuladas: Churn | Retenciones simuladas: Uplift | Diferencia simulada | Mejora en la simulación |
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Top 5 %** | 150 | 33,1 | 69,6 | +36,5 clientes | **+110,2 %** |
 | **Top 10 %** | 300 | 65,1 | 114,2 | +49,1 clientes | **+75,5 %** |
 | **Top 20 %** | 600 | 132,0 | 208,9 | +76,9 clientes | **+58,2 %** |
 
-> **Conclusión ejecutiva:** Con exactamente el mismo equipo de retención y la misma capacidad operativa (Top 20 %, 600 contactos), la política de Uplift salva **209 clientes frente a 132 del enfoque tradicional**, lo que representa un **+58,2 % de incremento en la efectividad neta del negocio**.
+> **Lectura del resultado:** En este escenario sintético de test, con capacidad equivalente al Top 20 % (600 contactos), la política ordenada por uplift arroja **209 retenciones simuladas frente a 132** con la política tradicional (+58,2 %). No es una estimación de impacto real ni una conclusión de efectividad comercial.

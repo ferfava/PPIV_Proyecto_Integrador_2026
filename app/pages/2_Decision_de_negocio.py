@@ -31,7 +31,7 @@ def load_data():
 
 cal, cap, up_comp, up_cuad, up_dec = load_data()
 
-st.markdown('<div class="hero"><h1>Decisión de negocio basada en riesgo y valor causal</h1><p>Calibración de probabilidades, optimización de capacidad operativa y modelado de Uplift.</p></div>', unsafe_allow_html=True)
+st.markdown('<div class="hero"><h1>Decisión de negocio basada en riesgo y capacidad</h1><p>Calibración de probabilidades, capacidad operativa y prueba de concepto de Uplift.</p></div>', unsafe_allow_html=True)
 
 st.markdown("## 1. ¿La probabilidad del modelo es confiable?")
 platt = cal.loc[cal["metodo"] == "Platt"].iloc[0]
@@ -74,12 +74,17 @@ fig.update_layout(height=390, margin=dict(l=10,r=10,t=50,b=20), paper_bgcolor="r
 st.plotly_chart(fig, use_container_width=True)
 
 st.markdown("---")
-st.markdown("## 3. Optimización con Uplift: ¿A quién conviene intervenir y a quién no?")
+st.markdown("## 3. Prueba de concepto Uplift: ¿cómo priorizar según respuesta potencial?")
+st.warning(
+    "Esta sección usa un experimento y resultados sintéticos generados por reglas basadas en satisfacción y soporte; no son resultados de una campaña real. "
+    "Las diferencias y retenciones mostradas ilustran el método, no prueban impacto causal ni ROI. "
+    "Validar con una prueba A/B de campo antes de tomar decisiones operativas."
+)
 st.markdown(
-    '<div class="insight"><b>De la analítica predictiva a la analítica prescriptiva y causal.</b><br>'
+    '<div class="insight"><b>De la analítica predictiva a una hipótesis prescriptiva.</b><br>'
     'El modelo de churn tradicional responde <i>"¿quién tiene alta probabilidad de irse?"</i>, pero en ese grupo hay clientes que abandonan hagan lo que hagan '
-    '(<i>Causas perdidas</i>) y clientes a los que contactar les acelera la baja (<i>Perros dormidos</i>).<br>'
-    '<b>Uplift Modeling</b> determina a quién intervenir para <b>maximizar la retención neta</b> enfocando los recursos exclusivamente en los <i>Persuadibles</i>.</div>',
+    '(<i>Causas perdidas</i>) y clientes para quienes el contacto podría ser adverso (<i>Perros dormidos</i>).<br>'
+    '<b>Uplift Modeling</b> busca estimar la respuesta incremental. Aquí los perfiles se obtienen en una simulación sintética y requieren validación experimental antes de orientar campañas.</div>',
     unsafe_allow_html=True,
 )
 
@@ -89,19 +94,19 @@ if not matched_up.empty:
     up_row = matched_up.iloc[0]
     st.markdown(f"### Rendimiento comparativo para capacidad **{label}** ({int(up_row['clientes_contactados']):,} clientes)")
     u1, u2, u3, u4 = st.columns(4)
-    u1.metric("Salvados (Churn tradicional)", f"{up_row['salvados_tradicional']:.1f}")
-    u2.metric("Salvados (Uplift Modeling)", f"{up_row['salvados_uplift']:.1f}")
-    u3.metric("Clientes adicionales salvados", f"+{up_row['clientes_adicionales_salvados']:.1f}", delta=f"{up_row['mejora_porcentual']}")
-    u4.metric("Mejora de eficiencia", f"{up_row['mejora_porcentual']}", help="Porcentaje de clientes retenidos adicionales frente a la selección tradicional de churn.")
+    u1.metric("Retenciones simuladas (Churn)", f"{up_row['salvados_tradicional']:.1f}")
+    u2.metric("Retenciones simuladas (Uplift)", f"{up_row['salvados_uplift']:.1f}")
+    u3.metric("Diferencia simulada", f"{up_row['clientes_adicionales_salvados']:+.1f}", delta=f"{up_row['mejora_porcentual']}")
+    u4.metric("Cambio relativo simulado", f"{up_row['mejora_porcentual']}", help="Cambio relativo en las retenciones estimadas dentro del escenario sintético.")
 
 l_col, r_col = st.columns([1.2, 1])
 with l_col:
-    # Gráfico comparativo de clientes salvados entre ambas políticas
+    # Gráfico comparativo de retenciones estimadas en la simulación
     fig_comp = go.Figure()
     fig_comp.add_trace(go.Bar(
         x=up_comp["fraccion_capacidad"],
         y=up_comp["salvados_tradicional"],
-        name="Modelo Churn Tradicional",
+        name="Modelo Churn (simulado)",
         marker_color="#94A3B8",
         text=up_comp["salvados_tradicional"].apply(lambda v: f"{v:.1f}"),
         textposition="auto"
@@ -109,13 +114,13 @@ with l_col:
     fig_comp.add_trace(go.Bar(
         x=up_comp["fraccion_capacidad"],
         y=up_comp["salvados_uplift"],
-        name="Modelo Uplift Causal",
+        name="Modelo Uplift (simulado)",
         marker_color="#2563EB",
         text=up_comp["salvados_uplift"].apply(lambda v: f"{v:.1f}"),
         textposition="auto"
     ))
     fig_comp.update_layout(
-        title="Clientes retenidos netos según política de selección",
+        title="Retenciones estimadas por política (escenario simulado)",
         barmode="group",
         height=380,
         margin=dict(l=10, r=10, t=50, b=20),
@@ -124,7 +129,7 @@ with l_col:
         font=dict(color="#344054"),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
     )
-    fig_comp.update_yaxes(title="Clientes salvados reales", gridcolor="#e9edf5")
+    fig_comp.update_yaxes(title="Retenciones estimadas en simulación", gridcolor="#e9edf5")
     fig_comp.update_xaxes(title="Capacidad operativa")
     st.plotly_chart(fig_comp, use_container_width=True)
 
@@ -155,44 +160,45 @@ with r_col:
         font=dict(color="#344054"),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
     )
+    fig_dec.update_layout(title="Abandono por decil (escenario simulado)")
     fig_dec.update_yaxes(title="Tasa de abandono (%)", gridcolor="#e9edf5")
     st.plotly_chart(fig_dec, use_container_width=True)
 
 # Conclusión constructiva de la comparación de modelos
 st.markdown(
-    '<div class="note"><b>Conclusión comparativa: Complementariedad y especialización.</b><br>'
+    '<div class="note"><b>Lectura del ejercicio sintético: complementariedad y especialización.</b><br>'
     'No se trata de que un enfoque anule al otro, sino de una <b>evolución natural del análisis</b>:<br>'
     '• <b>El Modelo de Churn</b> cumple un rol inicial indispensable: detecta dónde está concentrado el riesgo y filtra al ~70% de clientes estables que no requieren atención.<br>'
-    '• <b>El Modelo de Uplift</b> actúa como una <b>capa de especialización prescriptiva</b> sobre ese riesgo: distingue dentro de los clientes en peligro a quiénes podemos recuperar efectivamente (<i>Persuadibles</i>) de quiénes se van igual (<i>Causas perdidas</i>), evitando además el efecto adverso en <i>Perros dormidos</i>.<br>'
-    '<b>Impacto de negocio:</b> Para una misma capacidad (ej. 600 contactos en Top 20%), la especialización con Uplift rescata a <b>209 clientes frente a 132 del enfoque tradicional (+58,2% de mejora neta)</b> sin incrementar costos.</div>',
+    '• <b>La prueba de concepto Uplift</b> muestra cómo un ranking de respuesta incremental podría especializar esa priorización; sus categorías y resultados son sintéticos y no están validados en clientes reales.<br>'
+    '<b>Resultado simulado:</b> Para una capacidad equivalente a 600 contactos, la comparación arroja <b>209 frente a 132 retenciones simuladas (+58,2%)</b>; no es una medición de impacto de negocio.</div>',
     unsafe_allow_html=True,
 )
 
-st.markdown("### Segmentación en los 4 Cuadrantes Estratégicos")
+st.markdown("### Cuadrantes estimados en la simulación")
 q1, q2, q3, q4 = st.columns(4)
-q1.metric("Persuadibles (Foco VIP)", "23,8%", "714 clientes en test", help="Intervención prioritaria: el contacto revierte la baja.")
-q2.metric("Seguros (Sure Things)", "70,3%", "2.108 clientes en test", help="Fidelización pasiva: no dar descuentos innecesarios.")
-q3.metric("Causas Perdidas", "3,4%", "101 clientes en test", help="Abandono inevitable: cero gasto comercial.")
-q4.metric("Perros Dormidos", "2,6%", "77 clientes en test", help="Lista Do Not Disturb: contactarlos acelera su cancelación.", delta_color="inverse")
+q1.metric("Persuadibles (sim.)", "23,8%", "714 clientes en test", help="Perfil potencialmente sensible a la intervención según los resultados sintéticos.")
+q2.metric("Seguros (sim.)", "70,3%", "2.108 clientes en test", help="Perfil con baja respuesta estimada en la simulación.")
+q3.metric("Causas perdidas (sim.)", "3,4%", "101 clientes en test", help="Perfil cuyo resultado sintético predice abandono aun con intervención.")
+q4.metric("Perros dormidos (sim.)", "2,6%", "77 clientes en test", help="Perfil con posible efecto adverso según las reglas de simulación.")
 
 with st.expander("¿Qué significa cada uno de los 4 cuadrantes?", expanded=True):
     ca, cb = st.columns(2)
     with ca:
         st.markdown(
-            "- 🎯 **Persuadibles (23,8%):** Clientes que **abandonan si no intervenimos, pero se quedan si los contactamos**. Es el único grupo donde cada llamada o beneficio genera un retorno comercial positivo y medible.\n"
-            "- 🛡️ **Seguros / Sure Things (70,3%):** Clientes fieles que **se quedan de todos modos** (con o sin contacto). El objetivo es no saturarlos ni regalarles descuentos que erosionen el margen de la empresa."
+            "- 🎯 **Persuadibles (23,8%):** El modelo los estima sensibles a la intervención bajo las reglas sintéticas; no se ha verificado que una campaña los retenga.\n"
+            "- 🛡️ **Seguros / Sure Things (70,3%):** El resultado sintético predice baja respuesta a la intervención; no confirma el comportamiento real de estos clientes."
         )
     with cb:
         st.markdown(
-            "- ❌ **Causas Perdidas / Lost Causes (3,4%):** Clientes con decisión tomada que **abandonan hagamos lo que hagamos**. Intervenirlos es gasto irrecuperable; el modelo recomienda no gastar presupuesto comercial.\n"
-            "- 🚫 **Perros Dormidos / Sleeping Dogs (2,6%):** Clientes inactivos que están tranquilos; **contactarlos les recuerda el servicio y acelera su baja**. Requieren una política estricta de exclusión (*Do Not Disturb*)."
+            "- ❌ **Causas Perdidas / Lost Causes (3,4%):** El modelo predice abandono aun con intervención en este escenario sintético; no demuestra que el abandono sea inevitable.\n"
+            "- 🚫 **Perros Dormidos / Sleeping Dogs (2,6%):** El modelo predice posible efecto adverso según las reglas simuladas; no demuestra que contactar acelere una baja real."
         )
 
 # Tabla de técnicas comerciales según cuadrante
 cuad_view = up_cuad.rename(columns={
     "cuadrante": "Cuadrante",
     "porcentaje": "Porcentaje (%)",
-    "clientes": "Clientes (Test)",
+    "clientes": "Clientes (Test sintético)",
     "estrategia": "Estrategia Operativa",
     "accion_clave": "Técnica / Acción Clave"
 })
@@ -202,7 +208,7 @@ st.dataframe(
     hide_index=True,
     column_config={
         "Porcentaje (%)": st.column_config.NumberColumn(format="%.1f%%"),
-        "Clientes (Test)": st.column_config.NumberColumn(format="%d"),
+        "Clientes (Test sintético)": st.column_config.NumberColumn(format="%d"),
         "Estrategia Operativa": st.column_config.TextColumn(width="large"),
         "Técnica / Acción Clave": st.column_config.TextColumn(width="medium")
     }
@@ -225,17 +231,17 @@ with col_trad:
         st.warning("Estrategia de máxima cobertura: alcanza al 100% de los abandonos (900 clientes, FN = 0), pero contacta a 440 clientes sin churn.")
 
 with col_up:
-    st.markdown("#### Enfoque con Uplift (Eficiencia del rescate)")
+    st.markdown("#### Uplift (resultados sintéticos)")
     if selected["capacidad"] <= .10:
-        st.info("Máxima densidad de impacto: ataca al Decil 1 (+38,1% de uplift real), rescatando a 114 clientes con esfuerzo mínimo.")
+        st.info("En la simulación, el Decil 1 muestra una diferencia de +38,1% entre tratamiento y control.")
     elif selected["capacidad"] <= .20:
-        st.success("Punto óptimo de rentabilidad: cubre al 84% de los Persuadibles de la empresa, rescatando a 209 clientes sin desperdiciar contactos en Causas Perdidas ni Perros Dormidos (+58,2% vs tradicional).")
+        st.success("En la simulación, el Top 20% arroja 209 frente a 132 retenciones estimadas por el enfoque tradicional (+58,2% relativo). Validar en campo antes de inferir rentabilidad.")
     elif selected["capacidad"] <= .25:
-        st.warning("Rendimiento decreciente: la base de Persuadibles ya está prácticamente cubierta; los contactos extra apenas suman rescates.")
+        st.warning("En la simulación, el rendimiento incremental disminuye a medida que se amplía la capacidad.")
     else:
-        st.warning("Saturación de impacto: el rescate neto se estanca en ~210 clientes; los contactos por encima del 25% generan costo operativo sin beneficio adicional.")
+        st.warning("En la simulación, las retenciones incrementales se estancan cerca de 210; esto no estima costos ni beneficios reales.")
 
-st.markdown('<div class="note"><b>Principio de gobierno del modelo.</b> La probabilidad y el score no deciden por sí solos. Los modelos estiman riesgo y potencial de respuesta; la política de negocio define cuántos clientes intervenir según presupuesto, costo de contacto y capacidad operativa.</div>', unsafe_allow_html=True)
+st.markdown('<div class="note"><b>Principio de gobierno del modelo.</b> La probabilidad y el score no deciden por sí solos. El modelo de churn estima riesgo; el ranking uplift de esta prueba es sintético y no está validado en campo. Cualquier política de intervención debe contrastarse con resultados de un experimento real y costos observados.</div>', unsafe_allow_html=True)
 
 st.markdown("## 5. Trazabilidad")
 tab1, tab2 = st.tabs(["Capacidad y calibración tradicional", "Trazabilidad completa de Uplift"])
@@ -253,10 +259,10 @@ with tab2:
     comp_view = up_comp.rename(columns={
         "fraccion_capacidad": "Capacidad",
         "clientes_contactados": "Clientes",
-        "salvados_tradicional": "Salvados (Tradicional)",
-        "salvados_uplift": "Salvados (Uplift)",
-        "clientes_adicionales_salvados": "Ganancia Neta",
-        "mejora_porcentual": "Mejora Eficiencia"
+        "salvados_tradicional": "Retenciones simuladas (Tradicional)",
+        "salvados_uplift": "Retenciones simuladas (Uplift)",
+        "clientes_adicionales_salvados": "Diferencia simulada",
+        "mejora_porcentual": "Cambio relativo simulado"
     })
     st.dataframe(comp_view, use_container_width=True, hide_index=True)
 
@@ -273,12 +279,12 @@ with tab2:
         "clientes_tratados": "En Tratamiento",
         "churn_control": "Abandono Control",
         "churn_tratados": "Abandono Tratados",
-        "uplift_real": "Uplift Real",
+        "uplift_real": "Diferencia observada en simulación",
         "uplift_predicho": "Uplift Predicho"
     })
     st.dataframe(dec_view, use_container_width=True, hide_index=True)
 
-st.caption("Resultados calculados sobre el conjunto de test final (3.000 clientes). La elección de capacidad debe definirse con costos reales del negocio.")
+st.caption("Métricas uplift calculadas sobre un test sintético de 3.000 clientes. La simulación no sustituye un A/B test real; la capacidad y la política deben definirse con costos y evidencia de campo.")
 
 st.markdown("---")
 st.caption("Proyecto Integrador · Calibración probabilística · Decisión bajo restricción de capacidad · Uplift Modeling")
